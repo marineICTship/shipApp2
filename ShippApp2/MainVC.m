@@ -23,7 +23,7 @@
     return self;
 }
 
-- (void)viewDidLoad
+/*- (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -33,7 +33,7 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
+}*/
 
 
 //左の地図をつなげるための関数
