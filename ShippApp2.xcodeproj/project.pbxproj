@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A16711A17166D00FF44AA /* CustomOverlay.m */; };
 		9CCAF4CA1A1512160084C49B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4C91A1512160084C49B /* Foundation.framework */; };
 		9CCAF4CC1A1512160084C49B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4CB1A1512160084C49B /* CoreGraphics.framework */; };
 		9CCAF4CE1A1512160084C49B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4CD1A1512160084C49B /* UIKit.framework */; };
@@ -414,6 +415,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C5A16701A17166D00FF44AA /* CustomOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomOverlay.h; sourceTree = "<group>"; };
+		9C5A16711A17166D00FF44AA /* CustomOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomOverlay.m; sourceTree = "<group>"; };
 		9CCAF4C61A1512160084C49B /* ShippApp2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShippApp2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CCAF4C91A1512160084C49B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CCAF4CB1A1512160084C49B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -899,6 +902,8 @@
 				9CEC55581A16DAED00516137 /* ViewController.m */,
 				9CEC555A1A16DD8100516137 /* CustomAnnotation.h */,
 				9CEC555B1A16DD8100516137 /* CustomAnnotation.m */,
+				9C5A16701A17166D00FF44AA /* CustomOverlay.h */,
+				9C5A16711A17166D00FF44AA /* CustomOverlay.m */,
 			);
 			path = ShippApp2;
 			sourceTree = "<group>";
@@ -1815,6 +1820,7 @@
 				9CCAF50F1A1512470084C49B /* AMSlideMenuLeftMenuSegue.m in Sources */,
 				9CCAF5131A1512470084C49B /* AMSlideMenuRightTableViewController.m in Sources */,
 				9CCAF50E1A1512470084C49B /* AMSlideMenuContentSegue.m in Sources */,
+				9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */,
 				9CEC555C1A16DD8100516137 /* CustomAnnotation.m in Sources */,
 				9CCAF5191A1512E80084C49B /* MainVC.m in Sources */,
 				9CCAF5141A1512470084C49B /* UIViewController+AMSlideMenu.m in Sources */,
