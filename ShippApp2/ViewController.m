@@ -151,31 +151,41 @@
         NSString *lat = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][0];
         NSString *lon = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][1];
         NSString *speed = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"speed"];
-        NSString *course = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"course"];
+        NSString *course = shipjsonobj[@"ships"][i][@"Ship"][@"course"];
         NSString *time = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"timestamp"];
         NSString *shipicon;
-        
+        NSLog(@"[%d] [%@] [%@] [%@] ",i,speed,callsign,course);
+        double jspeed = speed.doubleValue;
         
         //アイコンの設定
-        /*if(speed.integerValue >= 1){
-            NSString *shipicon0 = @"ship_icon_";
-            NSString *radian = @"00";
-            NSString *radian2;
-            NSString *radian3;
+        if(jspeed >= 1.0){
+            NSString *shipicon00 = @"ship_icon_";
+            NSString *shipicon0;
+            NSString *radian;
+            NSString *ipng = @".png";
+            NSInteger icourse = course.integerValue; //courseのままでは不可
+            NSString *jcourse = [NSString stringWithFormat:@"%ld", icourse];
             
-            //文字列の結合 例 005,00100
-            radian2 = [radian stringByAppendingString:course];
-            
-            // 文字列の末尾から3文字を取り出す
-            radian3 = [radian2 substringFromIndex:3];
+            if(icourse >= 0 && icourse < 10){
+                //文字列の結合 例 005,
+                radian = [@"00" stringByAppendingString:jcourse];
+            }else if(icourse >= 10 && icourse < 100){
+                //文字列の結合 例 010
+                radian = [@"0" stringByAppendingString:jcourse];
+                
+            }else if(icourse >= 100 && icourse < 360){
+                radian = jcourse;
+            }
             
             //文字列の結合
-            shipicon = [shipicon0 stringByAppendingString:shipicon0];
+            shipicon0 = [shipicon00 stringByAppendingString:radian];//ship_icon_100
+            shipicon = [shipicon0 stringByAppendingString:ipng];
             
         }else{
             shipicon = @"ship_stop_icon_000.png";
             
-        }*/
+        }
+        UIImage *shipimg = [UIImage imageNamed:shipicon];
         
         CLLocationCoordinate2D point;
         //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
@@ -187,7 +197,7 @@
         pin.subtitle = time;
         [myMapView addAnnotation:pin];*/
         
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:time newimg:img];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:speed newSubTitle:course newimg:shipimg];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
