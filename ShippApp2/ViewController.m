@@ -25,13 +25,13 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //mapCreate,readMarine,readShip]を読み込む
+    //mapCreate,readMarine,readShipを読み込む
     [self createMap];
-    //[self readMarine];
+    [self readMarine];
     [self readShip];
 }
 
-//マップの処理を書く
+//マップの処理
 - (void) createMap{
     myMapView.delegate = self;
     
@@ -42,6 +42,58 @@
     region.span.longitudeDelta = 0.5;
     [myMapView setRegion:region animated:YES];
 }
+
+//メッシュチャート、海図情報の(1分ごとに更新する必要のない)jsonデータを取得
+- (void) readMarine{
+    
+    //メッシュチャートの情報を取得
+    NSString *path2 = [[NSBundle mainBundle] pathForResource:@"MeshChart" ofType:@"txt"];
+    NSData *meshjson = [NSData dataWithContentsOfFile:path2];
+    NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
+    
+    for(int k = 0; k < 30; k++){
+        CLLocationCoordinate2D coors[2];
+        
+        //NSString *lat1 = (NSString*)meshjsonobj[@"MeshCharts"][0][@"Mesh"][@"latlngs"][0][0];
+        NSString *lat1 = meshjsonobj[@"MeshCharts"][k][@"Mesh"][@"latlngs"][0][0];
+        NSString *lat2 = meshjsonobj[@"MeshCharts"][k][@"Mesh"][@"latlngs"][1][0];
+        NSString *lon1 = meshjsonobj[@"MeshCharts"][k][@"Mesh"][@"latlngs"][0][1];
+        NSString *lon2 = meshjsonobj[@"MeshCharts"][k][@"Mesh"][@"latlngs"][1][1];
+        
+        coors[0] = CLLocationCoordinate2DMake(lat1.floatValue, lon1.floatValue);
+        coors[1] = CLLocationCoordinate2DMake(lat2.floatValue, lon2.floatValue);
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:coors count:2];
+        [myMapView addOverlay:line];
+    }
+    
+    //マリンチャートの情報を取得
+    NSString *path3 = [[NSBundle mainBundle] pathForResource:@"MarineChart" ofType:@"txt"];
+    NSData *marinejson = [NSData dataWithContentsOfFile:path3];
+    NSMutableDictionary *marinejsonobj = [NSJSONSerialization JSONObjectWithData:marinejson options:0 error:nil];
+    
+    //ID0 海苔ヒビ 黄色(255,255,0)
+    //ID1 浮標 アイコン(赤(255,0,0))
+    //ID2 白(255,255,255)
+    //ID3 防波堤 黒(0,0,0)
+    //ID4 等深線 水色(51,158,255)
+    //ID5 メッシュチャート (51,204,255)
+    
+    /*for(int j = 0; j < 20; j++){
+        NSString *polygonID = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"polygonID"];
+        if(polygonID.integerValue == 1){
+            
+        }else{
+            
+            NSString *marinelat1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][0];
+            //NSString *marine_lat2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][0];
+            NSString *marinelon1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][1];
+            //NSString *marine_lon2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][1];
+            //NSLog(@"[%@] [%@] [%@] [%@]",marine_lat1,marine_lat2,marine_lon1,marine_lon2);
+            NSLog(@"[%@] [%@] ",marinelat1,marinelon1);
+        }
+    }*/
+}
+
 
 //船舶、漁船の(1分ごとに更新する必要のある)jsonデータを取得
 - (void) readShip{
@@ -119,6 +171,17 @@
     // annotationをマップに追加
     //[myMapView addAnnotation:annotation];
     
+}
+
+//線を引くとき呼ばれる
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
+{
+    MKPolylineView *view = [[MKPolylineView alloc]initWithOverlay:overlay];
+    //view.strokeColor = [UIColor blueColor];
+    view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
+    view.lineWidth = 0.3;
+    myMapView.showsUserLocation = NO;
+    return view;
 }
 
 // アノテーションが表示される時に呼ばれる
