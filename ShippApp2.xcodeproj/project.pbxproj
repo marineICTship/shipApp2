@@ -30,6 +30,7 @@
 		9CCAF5161A15128F0084C49B /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF5151A15128F0084C49B /* MapKit.framework */; };
 		9CCAF5191A1512E80084C49B /* MainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CCAF5181A1512E80084C49B /* MainVC.m */; };
 		9CCAF51B1A151FD20084C49B /* simpleMenuButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CCAF51A1A151FD20084C49B /* simpleMenuButton.png */; };
+		9CEC55591A16DAED00516137 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CEC55581A16DAED00516137 /* ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		9CCAF5171A1512E80084C49B /* MainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainVC.h; sourceTree = "<group>"; };
 		9CCAF5181A1512E80084C49B /* MainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainVC.m; sourceTree = "<group>"; };
 		9CCAF51A1A151FD20084C49B /* simpleMenuButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = simpleMenuButton.png; sourceTree = "<group>"; };
+		9CEC55571A16DAED00516137 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9CEC55581A16DAED00516137 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +143,7 @@
 		9CCAF4CF1A1512160084C49B /* ShippApp2 */ = {
 			isa = PBXGroup;
 			children = (
+				9CCAF4DB1A1512160084C49B /* Main.storyboard */,
 				9CCAF4FE1A1512470084C49B /* AMSlideMenu */,
 				9CCAF4D81A1512160084C49B /* AppDelegate.h */,
 				9CCAF4D91A1512160084C49B /* AppDelegate.m */,
@@ -147,6 +151,8 @@
 				9CCAF5181A1512E80084C49B /* MainVC.m */,
 				9CCAF4E11A1512160084C49B /* Images.xcassets */,
 				9CCAF4D01A1512160084C49B /* Supporting Files */,
+				9CEC55571A16DAED00516137 /* ViewController.h */,
+				9CEC55581A16DAED00516137 /* ViewController.m */,
 			);
 			path = ShippApp2;
 			sourceTree = "<group>";
@@ -155,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				9CCAF51A1A151FD20084C49B /* simpleMenuButton.png */,
-				9CCAF4DB1A1512160084C49B /* Main.storyboard */,
 				9CCAF4D11A1512160084C49B /* ShippApp2-Info.plist */,
 				9CCAF4D21A1512160084C49B /* InfoPlist.strings */,
 				9CCAF4D51A1512160084C49B /* main.m */,
@@ -307,6 +312,7 @@
 				9CCAF50E1A1512470084C49B /* AMSlideMenuContentSegue.m in Sources */,
 				9CCAF5191A1512E80084C49B /* MainVC.m in Sources */,
 				9CCAF5141A1512470084C49B /* UIViewController+AMSlideMenu.m in Sources */,
+				9CEC55591A16DAED00516137 /* ViewController.m in Sources */,
 				9CCAF5101A1512470084C49B /* AMSlideMenuLeftTableViewController.m in Sources */,
 				9CCAF4DA1A1512160084C49B /* AppDelegate.m in Sources */,
 				9CCAF5111A1512470084C49B /* AMSlideMenuMainViewController.m in Sources */,
@@ -396,7 +402,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -416,7 +422,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Takahiro Tsujiura (979W58N5R3)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -428,7 +434,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -442,6 +448,7 @@
 				GCC_PREFIX_HEADER = "ShippApp2/ShippApp2-Prefix.pch";
 				INFOPLIST_FILE = "ShippApp2/ShippApp2-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -455,6 +462,7 @@
 				GCC_PREFIX_HEADER = "ShippApp2/ShippApp2-Prefix.pch";
 				INFOPLIST_FILE = "ShippApp2/ShippApp2-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
