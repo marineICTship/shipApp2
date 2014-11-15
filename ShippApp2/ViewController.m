@@ -26,10 +26,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    //mapCreate,readMarine,readShipを読み込む
+    //mapCreate,readMarine,readShip,readBoatを読み込む
     [self createMap];
     [self readMarine];
+    
     [self readShip];
+    [self readBoat];
 }
 
 //マップの処理
@@ -125,9 +127,10 @@
 }
 
 
-//船舶、漁船の(1分ごとに更新する必要のある)jsonデータを取得
+//船舶の(1分ごとに更新する必要のある)jsonデータを取得
 - (void) readShip{
     //船舶jsonの取得
+    
     //ログデータ
     NSString *path_ship = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
     NSData *shipjson = [NSData dataWithContentsOfFile:path_ship];
@@ -142,39 +145,45 @@
     
     NSInteger shipsize = [shipjsonobj[@"ships"] count];
     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
+
     //
     for(int i = 0; i < shipsize; i++){
         NSString *mmsi = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"mmsi"];
         NSString *imo = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"imo"];
         NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
         NSString *callsign = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"callsign"];
-        NSString *lat = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][0];
-        NSString *lon = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][1];
-        NSString *speed = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"speed"];
-        NSString *course = shipjsonobj[@"ships"][i][@"Ship"][@"course"];
-        NSString *time = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"timestamp"];
+        NSString *slat60 = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latitude"];
+        NSString *slon60 = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"longtude"];
+        NSString *slat = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][0];
+        NSString *slon = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"latlng"][1];
+        NSString *sspeed = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"speed"];
+        NSString *scourse = shipjsonobj[@"ships"][i][@"Ship"][@"course"];
+        //NSString *slength = shipjsonobj[@"ships"][i][@"Ship"][@"length"];
+        //NSString *swidth = shipjsonobj[@"ships"][i][@"Ship"][@"width"];
+        //NSString *sflag = shipjsonobj[@"ships"][i][@"Ship"][@"flag"];
+        NSString *stime = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"timestamp"];
         NSString *shipicon;
-        NSLog(@"[%d] [%@] [%@] [%@] ",i,speed,callsign,course);
-        double jspeed = speed.doubleValue;
+        NSLog(@"[%d] [%@] [%@] [%@] ",i,sspeed,callsign,scourse);
+        double jsspeed = sspeed.doubleValue;
         
         //アイコンの設定
-        if(jspeed >= 1.0){
+        if(jsspeed >= 1.0){
             NSString *shipicon00 = @"ship_icon_";
             NSString *shipicon0;
             NSString *radian;
             NSString *ipng = @".png";
-            NSInteger icourse = course.integerValue; //courseのままでは不可
-            NSString *jcourse = [NSString stringWithFormat:@"%ld", icourse];
+            NSInteger iscourse = scourse.integerValue; //courseのままでは不可
+            NSString *jscourse = [NSString stringWithFormat:@"%ld", iscourse];
             
-            if(icourse >= 0 && icourse < 10){
+            if(iscourse >= 0 && iscourse < 10){
                 //文字列の結合 例 005,
-                radian = [@"00" stringByAppendingString:jcourse];
-            }else if(icourse >= 10 && icourse < 100){
+                radian = [@"00" stringByAppendingString:jscourse];
+            }else if(iscourse >= 10 && iscourse < 100){
                 //文字列の結合 例 010
-                radian = [@"0" stringByAppendingString:jcourse];
+                radian = [@"0" stringByAppendingString:jscourse];
                 
-            }else if(icourse >= 100 && icourse < 360){
-                radian = jcourse;
+            }else if(iscourse >= 100 && iscourse < 360){
+                radian = jscourse;
             }
             
             //文字列の結合
@@ -182,22 +191,22 @@
             shipicon = [shipicon0 stringByAppendingString:ipng];
             
         }else{
-            shipicon = @"ship_stop_icon_000.png";
+            shipicon = @"ship_stop_icon.png";
             
         }
         UIImage *shipimg = [UIImage imageNamed:shipicon];
         
         CLLocationCoordinate2D point;
         //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
-        point.latitude = lat.doubleValue;
-        point.longitude = lon.doubleValue;
+        point.latitude = slat.doubleValue;
+        point.longitude = slon.doubleValue;
         //UIImage *img = [UIImage imageNamed:shipicon];
         /*[pin setCoordinate:point];
         pin.title = name;
         pin.subtitle = time;
         [myMapView addAnnotation:pin];*/
         
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:speed newSubTitle:course newimg:shipimg];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:sspeed newSubTitle:scourse newimg:shipimg];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
@@ -214,6 +223,54 @@
     [myMapView addAnnotation:annotation];*/
     
 }
+
+//漁船の(1分ごとに更新する必要のある)jsonデータを取得
+- (void) readBoat{
+    //ログデータ
+    //NSString *path_boat = [[NSBundle mainBundle] pathForResource:@"boat" ofType:@"txt"];
+    NSString *path_boat = [[NSBundle mainBundle] pathForResource:@"boat" ofType:@"txt"];
+    NSData *boatjson = [NSData dataWithContentsOfFile:path_boat];
+    NSMutableDictionary *boatjsonobj = [NSJSONSerialization JSONObjectWithData:boatjson options:0 error:nil];
+    
+    NSInteger boatsize = [boatjsonobj[@"boats"] count];
+    //
+    for(int p = 0; p < boatsize; p++){
+
+        NSString *bid = boatjsonobj[@"boats"][p][@"Boat"][@"id"];
+        NSString *blat60 = boatjsonobj[@"boats"][p][@"Boat"][@"latitude"];
+        NSString *blon60 = boatjsonobj[@"boats"][p][@"Boat"][@"longitude"];
+        NSString *bspeed = boatjsonobj[@"boats"][p][@"Boat"][@"speed"];
+        NSString *bcourse = boatjsonobj[@"boats"][p][@"Boat"][@"course"];
+        NSString *btime = boatjsonobj[@"boats"][p][@"Boat"][@"timestamp"];
+        UIImage *boatimg;
+        double jbspeed = bspeed.doubleValue;
+        
+        NSInteger mbsize = [boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"] count];
+        
+        //if(){}一日以上経過していたらoutdata
+        if(jbspeed >= 2.0){
+            boatimg = [UIImage imageNamed:@"boat_move_icon.png"];
+        }else{
+            boatimg = [UIImage imageNamed:@"boat_move_icon.png"];
+        }
+        //for(int q = 0; q < mbsize; q++){
+            NSString *blat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][0];
+            NSString *blon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][1];
+        //}
+        
+        
+        CLLocationCoordinate2D bpoint;
+        bpoint.latitude = blat.doubleValue;
+        bpoint.longitude = blon.doubleValue;
+        
+        //CustomAnnotationを初期化
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bpoint newTitle:bspeed newSubTitle:bcourse newimg:boatimg];
+        // annotationをマップに追加
+        [myMapView addAnnotation:annotation];
+    
+    }
+}
+
 
 //線を引く際に呼ばれる
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
