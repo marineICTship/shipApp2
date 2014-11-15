@@ -47,8 +47,8 @@
 - (void) readMarine{
     
     //メッシュチャートの情報を取得
-    NSString *path2 = [[NSBundle mainBundle] pathForResource:@"MeshChart" ofType:@"txt"];
-    NSData *meshjson = [NSData dataWithContentsOfFile:path2];
+    NSString *path_mesh = [[NSBundle mainBundle] pathForResource:@"MeshChart" ofType:@"txt"];
+    NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
     NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
     
     for(int k = 0; k < 30; k++){
@@ -67,8 +67,8 @@
     }
     
     //マリンチャートの情報を取得
-    NSString *path3 = [[NSBundle mainBundle] pathForResource:@"MarineChart" ofType:@"txt"];
-    NSData *marinejson = [NSData dataWithContentsOfFile:path3];
+    NSString *path_marine = [[NSBundle mainBundle] pathForResource:@"MarineChart" ofType:@"txt"];
+    NSData *marinejson = [NSData dataWithContentsOfFile:path_marine];
     NSMutableDictionary *marinejsonobj = [NSJSONSerialization JSONObjectWithData:marinejson options:0 error:nil];
     
     //ID0 海苔ヒビ 黄色(255,255,0)
@@ -78,20 +78,36 @@
     //ID4 等深線 水色(51,158,255)
     //ID5 メッシュチャート (51,204,255)
     
-    /*for(int j = 0; j < 20; j++){
+    UIImage *fuhyouimg = [UIImage imageNamed:@"fuhyou.gif"];
+    for(int j = 1; j < 20; j++){
+        NSString *ID = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"ID"];
         NSString *polygonID = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"polygonID"];
-        if(polygonID.integerValue == 1){
+        NSString *marinelat1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][0];
+        NSString *marinelon1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][1];
+        CLLocationCoordinate2D fuhyou_point;
+        fuhyou_point.latitude = marinelat1.doubleValue;
+        fuhyou_point.longitude = marinelon1.doubleValue;
+        
+        if(ID.integerValue == 1){
+            NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
+            NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
+            
+            //CustomAnnotationクラスの初期化
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:marinelat60 newSubTitle:marinelon60 newimg:fuhyouimg];
+            [myMapView addAnnotation:annotation];
+            
+
             
         }else{
             
-            NSString *marinelat1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][0];
-            //NSString *marine_lat2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][0];
-            NSString *marinelon1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][1];
-            //NSString *marine_lon2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][1];
+            NSString *marinelat2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][0];
+            NSString *marinelon2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][1];
             //NSLog(@"[%@] [%@] [%@] [%@]",marine_lat1,marine_lat2,marine_lon1,marine_lon2);
             NSLog(@"[%@] [%@] ",marinelat1,marinelon1);
+            
         }
-    }*/
+
+    }
 }
 
 
@@ -99,8 +115,8 @@
 - (void) readShip{
     //船舶jsonの取得
     //ログデータ
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
-    NSData *shipjson = [NSData dataWithContentsOfFile:path];
+    NSString *path_ship = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
+    NSData *shipjson = [NSData dataWithContentsOfFile:path_ship];
     NSMutableDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
     
     
@@ -147,29 +163,30 @@
         }*/
         
         CLLocationCoordinate2D point;
-        MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
+        //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
         point.latitude = lat.doubleValue;
         point.longitude = lon.doubleValue;
         //UIImage *img = [UIImage imageNamed:shipicon];
-        [pin setCoordinate:point];
+        /*[pin setCoordinate:point];
         pin.title = name;
         pin.subtitle = time;
-        [myMapView addAnnotation:pin];
-        //CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:time newimg:img];
+        [myMapView addAnnotation:pin];*/
+        
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:time newimg:img];
         // annotationをマップに追加
-        //[myMapView addAnnotation:annotation];
+        [myMapView addAnnotation:annotation];
     }
     
-    /*MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
-     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
-     CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(41, 136);
+     /*MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
+     //UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
+     CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(37, 136);
      NSString *title = @"たいとる";
-     NSString *subTitle = @"さぶさぶさぶ";*/
+     NSString *subTitle = @"さぶさぶさぶ";
     
     // CustomAnnotationクラスの初期化
-    //CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:locationCoordinate newTitle:title newSubTitle:subTitle newPinColor:&pincolor newimg:img];
+    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:locationCoordinate newTitle:title newSubTitle:subTitle newimg:img];
     // annotationをマップに追加
-    //[myMapView addAnnotation:annotation];
+    [myMapView addAnnotation:annotation];*/
     
 }
 
@@ -191,15 +208,15 @@
     static NSString *PinIdentifier = @"Pin";
     MKAnnotationView *av = (MKAnnotationView*)[myMapView dequeueReusableAnnotationViewWithIdentifier:PinIdentifier];
     
-    //if([ annotation isKindOfClass:[ CustomAnnotation class ]]){
+    if([ annotation isKindOfClass:[ CustomAnnotation class ]]){
         
-        if(av == nil){
+        //if(av == nil){
         
         av = [[MKAnnotationView alloc]
               initWithAnnotation:annotation reuseIdentifier:PinIdentifier];
-        av.image = [UIImage imageNamed:@"ship_stop_icon_000.png"];  // アノテーションの画像を指定する
+        //av.image = [UIImage imageNamed:@"ship_stop_icon_000.png"];  // アノテーションの画像を指定する
         //av.image = [UIImage imageNamed:@"fuhyou.gif"];
-        //av.image = ((CustomAnnotation*)annotation).img;
+        av.image = ((CustomAnnotation*)annotation).img;
         av.canShowCallout = YES;  // ピンタップ時にコールアウトを表示する
     }
     return av;
