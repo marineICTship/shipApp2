@@ -12,15 +12,19 @@
 
 
 @interface CustomOverlay : NSObject <MKOverlay> {
+    CLLocationCoordinate2D linecoord;
     float lineWidth;
     UIColor *strokeColor;
+    int number;
 }
 
+@property (nonatomic, readonly) CLLocationCoordinate2D linecoord;
 @property (nonatomic)float lineWidth;;
 @property (nonatomic)UIColor *strokeColor;
+@property (nonatomic)int number;
 
 
-- (id)initWithstroke:(float)nlineWidth newstrokeColor:(UIColor *)sc;
+- (id)initWithCoordinates:(CLLocationCoordinate2D)lc withstroke:(float)nlineWidth newstrokeColor:(UIColor *)sc newcount:(int) cn;
 
 @end
 

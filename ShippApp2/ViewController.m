@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "CustomAnnotation.h"
+#import "CustomOverlay.h"
 
 @interface ViewController ()<MKMapViewDelegate>
 
@@ -51,7 +52,8 @@
     NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
     NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
     
-    for(int k = 0; k < 30; k++){
+    NSInteger meshsize = [meshjsonobj[@"MeshCharts"] count];
+    for(int k = 0; k < meshsize; k++){
         CLLocationCoordinate2D coors[2];
         
         //NSString *lat1 = (NSString*)meshjsonobj[@"MeshCharts"][0][@"Mesh"][@"latlngs"][0][0];
@@ -78,17 +80,20 @@
     //ID4 等深線 水色(51,158,255)
     //ID5 メッシュチャート (51,204,255)
     
+    NSInteger marinesize = [marinejsonobj[@"MarineCharts"] count];
     UIImage *fuhyouimg = [UIImage imageNamed:@"fuhyou.gif"];
-    for(int j = 1; j < 20; j++){
+    for(int j = 0; j < marinesize; j++){
         NSString *ID = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"ID"];
         NSString *polygonID = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"polygonID"];
-        NSString *marinelat1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][0];
-        NSString *marinelon1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][1];
+        NSString *fuhyoulat1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][0];
+        NSString *fuhyoulon1 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][0][1];
         CLLocationCoordinate2D fuhyou_point;
-        fuhyou_point.latitude = marinelat1.doubleValue;
-        fuhyou_point.longitude = marinelon1.doubleValue;
+        fuhyou_point.latitude = fuhyoulat1.doubleValue;
+        fuhyou_point.longitude = fuhyoulon1.doubleValue;
+        UIColor *sc = [UIColor colorWithRed:1.0 green:0.80 blue:1.00 alpha:1.0];;
         
         if(ID.integerValue == 1){
+            
             NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
             NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
             
@@ -99,11 +104,20 @@
 
             
         }else{
-            
-            NSString *marinelat2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][0];
-            NSString *marinelon2 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][1][1];
+            NSInteger size = [marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"] count];
             //NSLog(@"[%@] [%@] [%@] [%@]",marine_lat1,marine_lat2,marine_lon1,marine_lon2);
-            NSLog(@"[%@] [%@] ",marinelat1,marinelon1);
+            //NSLog(@"[%@] [%@] [%ld] ",marinelat1,marinelon1,size);
+            NSLog(@"[%d] [%@] [%@] [%ld] ",j,ID,polygonID,size);
+            
+            CLLocationCoordinate2D marine_point[size];
+            for(int m = 0; m < size; m++){
+                NSString *marinelat = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][m][0];
+                NSString *marinelon = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][m][1];
+                marine_point[m] = CLLocationCoordinate2DMake(marinelat.doubleValue,marinelon.doubleValue);
+            }
+            MKPolyline *line = [MKPolyline polylineWithCoordinates:marine_point count:size];
+            //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
+            [myMapView addOverlay:line];
             
         }
 
@@ -126,9 +140,10 @@
      NSData *shipjson = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
      NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];*/
     
+    NSInteger shipsize = [shipjsonobj[@"ships"] count];
     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
-    //jsonファイルの格納
-    for(int i = 0; i < 157; i++){
+    //
+    for(int i = 0; i < shipsize; i++){
         NSString *mmsi = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"mmsi"];
         NSString *imo = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"imo"];
         NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
@@ -190,14 +205,17 @@
     
 }
 
-//線を引くとき呼ばれる
+//線を引く際に呼ばれる
 - (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay
 {
     MKPolylineView *view = [[MKPolylineView alloc]initWithOverlay:overlay];
-    //view.strokeColor = [UIColor blueColor];
-    view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
-    view.lineWidth = 0.3;
-    myMapView.showsUserLocation = NO;
+    
+    //if([ line isKindOfClass:[ CustomOverlay class ]]){
+        //view.strokeColor = [UIColor blueColor];
+        view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
+        view.lineWidth = 0.5;
+        myMapView.showsUserLocation = NO;
+    //}
     return view;
 }
 
@@ -216,7 +234,7 @@
               initWithAnnotation:annotation reuseIdentifier:PinIdentifier];
         //av.image = [UIImage imageNamed:@"ship_stop_icon_000.png"];  // アノテーションの画像を指定する
         //av.image = [UIImage imageNamed:@"fuhyou.gif"];
-        av.image = ((CustomAnnotation*)annotation).img;
+        av.image = ((CustomAnnotation*)annotation).img;//アノテーションの画像を指定する
         av.canShowCallout = YES;  // ピンタップ時にコールアウトを表示する
     }
     return av;
