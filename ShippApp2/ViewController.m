@@ -32,7 +32,35 @@
     
     [self readShip];
     [self readBoat];
+    
+    //現在時刻の取得
+    NSDate *datetime = [NSDate date];
+    NSDateFormatter *fmt = [[NSDateFormatter alloc] init];
+    fmt.dateFormat = @"yyyy/MM/dd HH:mm:ss";
+    NSString *result = [fmt stringFromDate:datetime];  //表示するため文字列に変換する
+    NSLog(@"%@", result);
+    
+
+    // タイマーを作成してスタート
+    NSTimer *tm = [NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(hoge:) userInfo:nil repeats:YES];
+
 }
+
+// 呼ばれるhogeメソッド
+-(void)hoge:(NSTimer*)timer{
+    // ここに何かの処理を記述する
+    // （引数の timer には呼び出し元のNSTimerオブジェクトが引き渡されてきます）
+    [self refresh];
+    
+    [self readShip];
+    [self readBoat];
+    [self readMarine];
+    
+    int up = 1;
+    NSLog(@"%d,Yes",up);
+    up++;
+}
+
 
 //マップの処理
 - (void) createMap{
@@ -130,18 +158,19 @@
 //船舶の(1分ごとに更新する必要のある)jsonデータを取得
 - (void) readShip{
     //船舶jsonの取得
+    CustomAnnotation *annotation = [CustomAnnotation alloc];
     
     //ログデータ
-    NSString *path_ship = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
+    /*NSString *path_ship = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
     NSData *shipjson = [NSData dataWithContentsOfFile:path_ship];
     NSMutableDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
+    */
     
-    
-    /*NSURL *path = [NSURL URLWithString:@"http://175.184.26.216/ships.json"];
+    NSURL *path = [NSURL URLWithString:@"http://175.184.26.216/ships.json"];
      NSURLRequest *request = [NSURLRequest requestWithURL:path];
      NSURLResponse *response;
      NSData *shipjson = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-     NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];*/
+     NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
     
     NSInteger shipsize = [shipjsonobj[@"ships"] count];
     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
@@ -208,7 +237,8 @@
         //[myMapView addAnnotation:pin];
         
         //CustomAnnotationクラスの初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
+        //CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
+        annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
         //annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
@@ -317,7 +347,10 @@
     return av;
 }
 
-
+- (void)refresh{
+    //CustomAnnotation *annotation = [CustomAnnotation alloc];
+    [myMapView removeAnnotations: myMapView.annotations];
+}
 
 
 - (void)didReceiveMemoryWarning {

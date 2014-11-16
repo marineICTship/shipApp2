@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C22B41C1A189BFA00DF9F74 /* fishNet.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C22B41B1A189BFA00DF9F74 /* fishNet.txt */; };
 		9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A16711A17166D00FF44AA /* CustomOverlay.m */; };
 		9C5A16761A1742BC00FF44AA /* boatNull.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16751A1742BC00FF44AA /* boatNull.txt */; };
 		9C5A16781A175C0400FF44AA /* ship_stop_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16771A175C0400FF44AA /* ship_stop_icon.png */; };
@@ -417,6 +418,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C22B41B1A189BFA00DF9F74 /* fishNet.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fishNet.txt; sourceTree = "<group>"; };
 		9C5A16701A17166D00FF44AA /* CustomOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomOverlay.h; sourceTree = "<group>"; };
 		9C5A16711A17166D00FF44AA /* CustomOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomOverlay.m; sourceTree = "<group>"; };
 		9C5A16751A1742BC00FF44AA /* boatNull.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = boatNull.txt; sourceTree = "<group>"; };
@@ -1352,6 +1354,7 @@
 				9CEC5B1A1A17017300516137 /* MeshChart.txt */,
 				9CEC5B1D1A17018F00516137 /* MarineChart.txt */,
 				9C5A16751A1742BC00FF44AA /* boatNull.txt */,
+				9C22B41B1A189BFA00DF9F74 /* fishNet.txt */,
 			);
 			name = json;
 			sourceTree = "<group>";
@@ -1754,6 +1757,7 @@
 				9CEC59D21A16FF7D00516137 /* ship_icon_048.png in Resources */,
 				9CEC5AD51A16FF7D00516137 /* ship_icon_307.png in Resources */,
 				9CEC5A2D1A16FF7D00516137 /* ship_icon_139.png in Resources */,
+				9C22B41C1A189BFA00DF9F74 /* fishNet.txt in Resources */,
 				9C5A16761A1742BC00FF44AA /* boatNull.txt in Resources */,
 				9CEC5A301A16FF7D00516137 /* ship_icon_142.png in Resources */,
 				9CEC59A31A16FF7D00516137 /* ship_icon_001.png in Resources */,
