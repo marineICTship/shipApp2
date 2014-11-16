@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9C22B41C1A189BFA00DF9F74 /* fishNet.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C22B41B1A189BFA00DF9F74 /* fishNet.txt */; };
+		9C22B4211A18F91500DF9F74 /* DetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C22B4201A18F91500DF9F74 /* DetailTableViewController.m */; };
 		9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A16711A17166D00FF44AA /* CustomOverlay.m */; };
 		9C5A16761A1742BC00FF44AA /* boatNull.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16751A1742BC00FF44AA /* boatNull.txt */; };
 		9C5A16781A175C0400FF44AA /* ship_stop_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16771A175C0400FF44AA /* ship_stop_icon.png */; };
@@ -419,6 +420,8 @@
 
 /* Begin PBXFileReference section */
 		9C22B41B1A189BFA00DF9F74 /* fishNet.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fishNet.txt; sourceTree = "<group>"; };
+		9C22B41F1A18F91500DF9F74 /* DetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewController.h; sourceTree = "<group>"; };
+		9C22B4201A18F91500DF9F74 /* DetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewController.m; sourceTree = "<group>"; };
 		9C5A16701A17166D00FF44AA /* CustomOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomOverlay.h; sourceTree = "<group>"; };
 		9C5A16711A17166D00FF44AA /* CustomOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomOverlay.m; sourceTree = "<group>"; };
 		9C5A16751A1742BC00FF44AA /* boatNull.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = boatNull.txt; sourceTree = "<group>"; };
@@ -910,6 +913,8 @@
 				9CEC555B1A16DD8100516137 /* CustomAnnotation.m */,
 				9C5A16701A17166D00FF44AA /* CustomOverlay.h */,
 				9C5A16711A17166D00FF44AA /* CustomOverlay.m */,
+				9C22B41F1A18F91500DF9F74 /* DetailTableViewController.h */,
+				9C22B4201A18F91500DF9F74 /* DetailTableViewController.m */,
 			);
 			path = ShippApp2;
 			sourceTree = "<group>";
@@ -1831,6 +1836,7 @@
 			files = (
 				9CCAF50F1A1512470084C49B /* AMSlideMenuLeftMenuSegue.m in Sources */,
 				9CCAF5131A1512470084C49B /* AMSlideMenuRightTableViewController.m in Sources */,
+				9C22B4211A18F91500DF9F74 /* DetailTableViewController.m in Sources */,
 				9CCAF50E1A1512470084C49B /* AMSlideMenuContentSegue.m in Sources */,
 				9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */,
 				9CEC555C1A16DD8100516137 /* CustomAnnotation.m in Sources */,
