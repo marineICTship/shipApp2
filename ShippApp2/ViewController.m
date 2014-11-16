@@ -92,7 +92,7 @@
         CLLocationCoordinate2D fuhyou_point;
         fuhyou_point.latitude = fuhyoulat1.doubleValue;
         fuhyou_point.longitude = fuhyoulon1.doubleValue;
-        UIColor *sc = [UIColor colorWithRed:1.0 green:0.80 blue:1.00 alpha:1.0];;
+        //UIColor *sc = [UIColor colorWithRed:1.0 green:0.80 blue:1.00 alpha:1.0];;
         
         if(ID.integerValue == 1){
             
@@ -212,9 +212,9 @@
         //annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
-//}
+}
 
-     MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
+     /*MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
      //UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
      CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(37, 136);
      NSString *title = @"たいとる";
@@ -224,7 +224,7 @@
     CustomAnnotation *aannotation = [[CustomAnnotation alloc] initWithCoordinates:locationCoordinate newTitle:title newSubTitle:subTitle newimg:img];
     // annotationをマップに追加
     [myMapView addAnnotation:aannotation];
-      }
+      }*/
     
 
 
@@ -249,7 +249,7 @@
         UIImage *boatimg;
         double jbspeed = bspeed.doubleValue;
         
-        NSInteger mbsize = [boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"] count];
+        NSInteger mbsize = [boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"] count]; //mark
         
         //if(){}一日以上経過していたらoutdata
         if(jbspeed >= 2.0){
@@ -257,21 +257,27 @@
         }else{
             boatimg = [UIImage imageNamed:@"boat_stop_icon.png"];
         }
-        //for(int q = 0; q < mbsize; q++){
-            NSString *blat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][0];
-            NSString *blon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][1];
-        //}
         
+        NSString *bwlat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][0]; //wake
+        NSString *bwlon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][1];
         
-        CLLocationCoordinate2D bpoint;
-        bpoint.latitude = blat.doubleValue;
-        bpoint.longitude = blon.doubleValue;
+        CLLocationCoordinate2D bwpoint,bppoint[mbsize - 1];
+        bwpoint.latitude = bwlat.doubleValue;
+        bwpoint.longitude = bwlon.doubleValue;
         
         //CustomAnnotationを初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bpoint newTitle:blat60 newSubTitle:blon60 newimg:boatimg];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:blat60 newSubTitle:blon60 newimg:boatimg];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
-    
+        
+        for(int q = 0; q < mbsize - 1; q++){
+            NSString *bplat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][q][0]; //position
+            NSString *bplon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][q][1];
+            bppoint[q] = CLLocationCoordinate2DMake(bplat.doubleValue,bplon.doubleValue);
+        }
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:bppoint count:mbsize - 1];
+        //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
+        [myMapView addOverlay:line];
     }
 }
 
