@@ -171,10 +171,10 @@
     */
     
     NSURL *path = [NSURL URLWithString:@"http://175.184.26.216/ships.json"];
-     NSURLRequest *request = [NSURLRequest requestWithURL:path];
-     NSURLResponse *response;
-     NSData *shipjson = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-     NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
+    NSURLRequest *request = [NSURLRequest requestWithURL:path];
+    NSURLResponse *response;
+    NSData *shipjson = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
     
     NSInteger shipsize = [shipjsonobj[@"ships"] count];
     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
@@ -208,7 +208,7 @@
             NSInteger iscourse = scourse.integerValue; //courseのままでは不可
             NSString *jscourse = [NSString stringWithFormat:@"%ld", iscourse];
             
-            if(iscourse >= 0 && iscourse < 10){
+            if(iscourse > 0 && iscourse < 10){
                 //文字列の結合 例 005,
                 radian = [@"00" stringByAppendingString:jscourse];
                 
@@ -275,7 +275,7 @@
     NSMutableDictionary *boatjsonobj = [NSJSONSerialization JSONObjectWithData:boatjson options:0 error:nil];
     
     NSInteger boatsize = [boatjsonobj[@"boats"] count];
-    //
+    
     for(int p = 0; p < boatsize; p++){
 
         NSString *bid = boatjsonobj[@"boats"][p][@"Boat"][@"id"];
@@ -289,12 +289,74 @@
         
         NSInteger mbsize = [boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"] count]; //mark
         
+        NSString *under = @"_";
+        NSString *bpng = @".png";
+        NSString *radian;
+        NSString *boaticon;
+        NSInteger bicourse = bcourse.integerValue; //courseのままでは不可
+        NSString *bscourse = [NSString stringWithFormat:@"%ld", bicourse];
+        
+        //アプリ内にpngファイルがある場合
         //if(){}一日以上経過していたらoutdata
         if(jbspeed >= 2.0){
-            boatimg = [UIImage imageNamed:@"boat_move_icon.png"];
+            NSString *boat = @"boat";
+            NSString *radian2;
+            NSString *radian3;
+            
+            //文字列の結合 例 boat01,boat01_,boat01_1,boat01_1.png
+            radian = [boat stringByAppendingString:bid];
+            radian2 = [radian stringByAppendingString:under];
+            radian3 = [radian2 stringByAppendingString:bscourse];
+            //boaticon = [radian3 stringByAppendingString:bpng];//
+            
+            boaticon = @"boat_move_icon.png";//
         }else{
-            boatimg = [UIImage imageNamed:@"boat_stop_icon.png"];
+            NSString *boat = @"b";
+            
+            //文字列の結合 例 b01,b01.png
+            radian = [boat stringByAppendingString:bid];
+            //boaticon = [radian stringByAppendingString:bpng];//
+            
+            boaticon = @"boat_stop_icon.png";//
         }
+        boatimg = [UIImage imageNamed:boaticon];
+        //↑アプリ内にpngファイルがある場合
+        
+        //サーバからpngファイルを読み込む場合
+        /*
+        if(jbspeed >= 2.0){
+            NSString *burl0 =  @"http://175.184.26.216/app/webroot/ship/ship_icon_";
+            NSString *shipicon00;
+            NSString *shipicon0;
+            
+            if(bicourse > 0 && bicourse < 10){
+                //文字列の結合 例 005,
+                radian = [@"00" stringByAppendingString:bscourse];
+                
+            }else if(bicourse >= 10 && bicourse < 100){
+                //文字列の結合 例 010
+                radian = [@"0" stringByAppendingString:bscourse];
+                
+            }else if(bicourse >= 100 && bicourse < 360){
+                radian = bscourse;
+                
+            }else{
+                radian = @"000";
+            }
+            
+            //文字列の結合
+            shipicon00 = [burl0 stringByAppendingString:radian];//ship_icon_100
+            shipicon0 = [shipicon00 stringByAppendingString:bpng];
+            boaticon = [shipicon0 stringByAppendingString:shipicon0];
+
+        }else{
+            boaticon =  @"http://175.184.26.216/app/webroot/ship/ship_icon_000.png";
+
+        }
+        NSURL *burl = [NSURL URLWithString:boaticon];
+        NSData *bdata = [NSData dataWithContentsOfURL:burl];
+        boatimg = [UIImage imageWithData:bdata];*/
+        //↑サーバからpngファイルを読み込む場合
         
         NSString *bwlat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][0]; //wake
         NSString *bwlon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][1];
