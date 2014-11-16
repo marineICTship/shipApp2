@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "CustomAnnotation.h"
 #import "CustomOverlay.h"
+#import "DetailTableViewController.h"
+
 
 @interface ViewController ()<MKMapViewDelegate>
 
@@ -19,6 +21,8 @@
 
 @implementation ViewController
 @synthesize myMapView,colorjugde;
+//@synthesize mmsi,imo,name,allsign,slat60,slon60,sspeed,scourse,stime;
+//slength,swidth,flag
 
 
 
@@ -33,6 +37,7 @@
     
     [self readShip];
     [self readBoat];
+    
     
     //現在時刻の取得
     NSDate *datetime = [NSDate date];
@@ -445,9 +450,40 @@
         //av.image = [UIImage imageNamed:@"fuhyou.gif"];
         av.image = ((CustomAnnotation*)annotation).img;//アノテーションの画像を指定する
         av.canShowCallout = YES;  // ピンタップ時にコールアウトを表示する
+        UIButton *b = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        av.rightCalloutAccessoryView = b;
+        
     }
     return av;
 }
+
+- (void) mapView:(MKMapView*)_mapView annotationView:(MKAnnotationView*)annotationView calloutAccessoryControlTapped:(UIControl*)control {
+    // タップしたときの処理
+    // annotationView.annotation でどのアノテーションか判定可能
+    CustomAnnotation* pin = (CustomAnnotation*)annotationView.annotation;
+    NSLog(@"title:%@",pin.subtitle);
+    
+    sename = pin.title;
+    setime = pin.subtitle;
+    //mmsi,imo,
+    //,allsign,slat60,slon60,sspeed,scourse,stime;
+    
+    [self performSegueWithIdentifier:@"detail" sender:self];
+
+}
+
+//Segueが実行されると、実行直前に自動的に呼び出される
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    //Segueの特定
+    if ( [[segue identifier] isEqualToString:@"detail"] ) {
+        DetailTableViewController *nextViewController = [segue destinationViewController];
+        //ここで遷移先ビューのクラスの変数receiveStringに値を渡している
+        nextViewController.sename = sename;
+        nextViewController.setime = setime;
+    }
+}
+
 
 - (void)refresh{
     //CustomAnnotation *annotation = [CustomAnnotation alloc];
