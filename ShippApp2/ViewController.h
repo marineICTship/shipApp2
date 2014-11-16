@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController{
+    int colorjugde;
+}
 
 @property (strong, nonatomic) IBOutlet MKMapView *myMapView;
+@property (nonatomic)int colorjugde;
+
 @end

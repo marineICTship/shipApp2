@@ -12,14 +12,15 @@
 
 @interface ViewController ()<MKMapViewDelegate>
 
-
 @property (nonatomic, retain) MKMapView *mapView;
 
 
 @end
 
 @implementation ViewController
-@synthesize myMapView;
+@synthesize myMapView,colorjugde;
+
+
 
 //アプリ起動時に呼ばれる
 - (void)viewDidLoad {
@@ -82,6 +83,7 @@
     NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
     NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
     
+    colorjugde = 5;
     NSInteger meshsize = [meshjsonobj[@"MeshCharts"] count];
     for(int k = 0; k < meshsize; k++){
         CLLocationCoordinate2D coors[2];
@@ -145,6 +147,8 @@
                 NSString *marinelon = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][m][1];
                 marine_point[m] = CLLocationCoordinate2DMake(marinelat.doubleValue,marinelon.doubleValue);
             }
+            colorjugde = ID.intValue;
+            
             MKPolyline *line = [MKPolyline polylineWithCoordinates:marine_point count:size];
             //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
             [myMapView addOverlay:line];
@@ -207,12 +211,16 @@
             if(iscourse >= 0 && iscourse < 10){
                 //文字列の結合 例 005,
                 radian = [@"00" stringByAppendingString:jscourse];
+                
             }else if(iscourse >= 10 && iscourse < 100){
                 //文字列の結合 例 010
                 radian = [@"0" stringByAppendingString:jscourse];
                 
             }else if(iscourse >= 100 && iscourse < 360){
                 radian = jscourse;
+                
+            }else{
+                radian = @"000";
             }
             
             //文字列の結合
@@ -305,6 +313,7 @@
             NSString *bplon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][q][1];
             bppoint[q] = CLLocationCoordinate2DMake(bplat.doubleValue,bplon.doubleValue);
         }
+        colorjugde = 6;
         MKPolyline *line = [MKPolyline polylineWithCoordinates:bppoint count:mbsize - 1];
         //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
         [myMapView addOverlay:line];
@@ -317,12 +326,43 @@
 {
     MKPolylineView *view = [[MKPolylineView alloc]initWithOverlay:overlay];
     
-    //if([ line isKindOfClass:[ CustomOverlay class ]]){
-        //view.strokeColor = [UIColor blueColor];
-        view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
-        view.lineWidth = 0.5;
-        myMapView.showsUserLocation = NO;
-    //}
+    view.lineWidth = 1.0;
+    switch (colorjugde) {
+        case (0): //ID0 海苔ヒビ 黄色(255,255,0)
+            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
+            break;
+            
+        case (1): //ID1 浮標 アイコン(赤(255,0,0))
+            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:1.0];
+            break;
+            
+        case (2): //ID2 白(255,255,255)
+            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:1.0];
+            break;
+            
+        case (3): //ID3 防波堤 黒(0,0,0)
+            view.strokeColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1.0];
+            break;
+            
+        case (4): //ID4 等深線 水色(51,158,255)
+            view.strokeColor = [UIColor colorWithRed:0.20 green:0.60 blue:1.00 alpha:1.0];
+            view.lineWidth = 0.3;//船舶、漁船針路、漁船航跡も(透明度も)0.3
+            break;
+            
+        case (5): //ID5 メッシュチャート (51,204,255)
+            view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
+            view.lineWidth = 0.3;
+            break;
+        
+        case (6): //01 漁船 アイコン(赤(255,0,0))
+            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:0.3];
+            view.lineWidth = 0.3;
+            break;
+            
+    }
+    
+    myMapView.showsUserLocation = NO;
+    
     return view;
 }
 
