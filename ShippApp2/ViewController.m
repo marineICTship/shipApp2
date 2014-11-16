@@ -99,8 +99,8 @@
             NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
             NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
             
-            //CustomAnnotationクラスの初期化
-            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:marinelat60 newSubTitle:marinelon60 newimg:fuhyouimg];
+            
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:ID newSubTitle:ID newimg:fuhyouimg];
             [myMapView addAnnotation:annotation];
             
 
@@ -109,7 +109,7 @@
             NSInteger size = [marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"] count];
             //NSLog(@"[%@] [%@] [%@] [%@]",marine_lat1,marine_lat2,marine_lon1,marine_lon2);
             //NSLog(@"[%@] [%@] [%ld] ",marinelat1,marinelon1,size);
-            NSLog(@"[%d] [%@] [%@] [%ld] ",j,ID,polygonID,size);
+            //NSLog(@"[%d] [%@] [%@] [%ld] ",j,ID,polygonID,size);
             
             CLLocationCoordinate2D marine_point[size];
             for(int m = 0; m < size; m++){
@@ -163,7 +163,7 @@
         //NSString *sflag = shipjsonobj[@"ships"][i][@"Ship"][@"flag"];
         NSString *stime = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"timestamp"];
         NSString *shipicon;
-        NSLog(@"[%d] [%@] [%@] [%@] ",i,sspeed,callsign,scourse);
+        //NSLog(@"[%d] [%@] [%@] [%@] ",i,sspeed,callsign,scourse);
         double jsspeed = sspeed.doubleValue;
         
         //アイコンの設定
@@ -197,32 +197,36 @@
         UIImage *shipimg = [UIImage imageNamed:shipicon];
         
         CLLocationCoordinate2D point;
-        //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
         point.latitude = slat.doubleValue;
         point.longitude = slon.doubleValue;
-        //UIImage *img = [UIImage imageNamed:shipicon];
-        /*[pin setCoordinate:point];
-        pin.title = name;
-        pin.subtitle = time;
-        [myMapView addAnnotation:pin];*/
         
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:sspeed newSubTitle:scourse newimg:shipimg];
-        // annotationをマップに追加
+        //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
+        //UIImage *img = [UIImage imageNamed:shipicon];
+        //[pin setCoordinate:point];
+        //pin.title = name;
+        //pin.subtitle = stime;
+        //[myMapView addAnnotation:pin];
+        
+        //CustomAnnotationクラスの初期化
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
+        //annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
-    
-     /*MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
+//}
+
+     MKPinAnnotationColor pincolor = MKPinAnnotationColorGreen;
      //UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
      CLLocationCoordinate2D locationCoordinate = CLLocationCoordinate2DMake(37, 136);
      NSString *title = @"たいとる";
      NSString *subTitle = @"さぶさぶさぶ";
     
     // CustomAnnotationクラスの初期化
-    CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:locationCoordinate newTitle:title newSubTitle:subTitle newimg:img];
+    CustomAnnotation *aannotation = [[CustomAnnotation alloc] initWithCoordinates:locationCoordinate newTitle:title newSubTitle:subTitle newimg:img];
     // annotationをマップに追加
-    [myMapView addAnnotation:annotation];*/
+    [myMapView addAnnotation:aannotation];
+      }
     
-}
+
 
 //漁船の(1分ごとに更新する必要のある)jsonデータを取得
 - (void) readBoat{
@@ -251,7 +255,7 @@
         if(jbspeed >= 2.0){
             boatimg = [UIImage imageNamed:@"boat_move_icon.png"];
         }else{
-            boatimg = [UIImage imageNamed:@"boat_move_icon.png"];
+            boatimg = [UIImage imageNamed:@"boat_stop_icon.png"];
         }
         //for(int q = 0; q < mbsize; q++){
             NSString *blat = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][mbsize - 1][0];
@@ -264,7 +268,7 @@
         bpoint.longitude = blon.doubleValue;
         
         //CustomAnnotationを初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bpoint newTitle:bspeed newSubTitle:bcourse newimg:boatimg];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bpoint newTitle:blat60 newSubTitle:blon60 newimg:boatimg];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
     
