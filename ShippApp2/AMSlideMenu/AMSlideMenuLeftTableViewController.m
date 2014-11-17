@@ -62,7 +62,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.mainVC respondsToSelector:@selector(navigationControllerForIndexPathInLeftMenu:)]) {
+    /*if ([self.mainVC respondsToSelector:@selector(navigationControllerForIndexPathInLeftMenu:)]) {
         UINavigationController *navController = [self.mainVC navigationControllerForIndexPathInLeftMenu:indexPath];
         AMSlideMenuContentSegue *segue = [[AMSlideMenuContentSegue alloc] initWithIdentifier:@"ContentSugue" source:self destination:navController];
         [segue perform];
@@ -72,7 +72,40 @@
         {
             [self performSegueWithIdentifier:segueIdentifier sender:self];
         }
+    }*/
+    
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSString *reuseIdentifire = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifire];
+    if( cell == nil){
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifire];
     }
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ship" ofType:@"txt"];
+    NSData *shipjson = [NSData dataWithContentsOfFile:path];
+    NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
+    
+    //cell.textLabel.text = @"表示する文字";
+    
+    
+    
+    
+    for (int i = 0;i < 157;i++) {
+        if(indexPath.row == i){
+            cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipjsonobj[@"ships"][i][@"Ship"][@"name"]];
+        }
+    }
+    
+    //文字の色
+    //cell.textLabel.textColor = [UIColor brownColor];
+    //文字サイズ
+    cell.textLabel.font = [UIFont systemFontOfSize:30];
+    //チェックマーク
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    
+    return cell;
 }
 
 
