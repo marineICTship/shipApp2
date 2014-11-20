@@ -12,6 +12,7 @@
 @interface ViewController : UIViewController{
     int colorjugde;
     double widthjugde;
+    double aj;
     NSString *semmsi;
     NSString *seimo;
     NSString *sename;
@@ -30,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet MKMapView *myMapView;
 @property (nonatomic)int colorjugde;
 @property (nonatomic)double widthjugde;
+@property (nonatomic)double aj;
 @property (nonatomic)NSString *semmsi;
 @property (nonatomic)NSString *sename;
 @property (nonatomic)NSString *secallsign;
