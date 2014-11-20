@@ -10,9 +10,12 @@
 #import "CustomAnnotation.h"
 #import "CustomOverlay.h"
 #import "DetailTableViewController.h"
+#import "AppDelegate.h"
 
 
-@interface ViewController ()<MKMapViewDelegate>
+@interface ViewController ()<MKMapViewDelegate>{
+
+}
 
 @property (nonatomic, retain) MKMapView *mapView;
 
@@ -20,7 +23,8 @@
 @end
 
 @implementation ViewController
-@synthesize myMapView,colorjugde;
+@synthesize myMapView,colorjugde,aj;
+
 //@synthesize mmsi,imo,name,allsign,slat60,slon60,sspeed,scourse,stime;
 //slength,swidth,flag
 
@@ -29,14 +33,17 @@
 //アプリ起動時に呼ばれる
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the vie
+
     
     //mapCreate,readMarine,readShip,readBoatを読み込む
     [self createMap];
+    [self readMesh];
     [self readMarine];
     
     [self readShip];
     [self readBoat];
+    [self readFishingNet];
     
     
     //現在時刻の取得
@@ -78,17 +85,26 @@
     region.span.latitudeDelta = 0.5;
     region.span.longitudeDelta = 0.5;
     [myMapView setRegion:region animated:YES];
+    
 }
 
-//メッシュチャート、海図情報の(1分ごとに更新する必要のない)jsonデータを取得
-- (void) readMarine{
-    
+//メッシュチャート
+- (void) readMesh{
     //メッシュチャートの情報を取得
-    NSString *path_mesh = [[NSBundle mainBundle] pathForResource:@"MeshChart" ofType:@"txt"];
-    NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
-    NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
+    /*NSURL *path_mesh = [NSURL URLWithString:@"http://175.184.26.216/MeshChart.json"];
+    NSURLRequest *merequest = [NSURLRequest requestWithURL:path_mesh];
+    NSURLResponse *response;
+    NSData *meshjson = [NSURLConnection sendSynchronousRequest:merequest returningResponse:&response error:nil];
+    NSDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];*/
     
-    colorjugde = 5;
+    //ログデータ
+    NSString *path_mesh = [[NSBundle mainBundle] pathForResource:@"MeshChart" ofType:@"txt"];
+     NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
+     NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
+    
+    colorjugde = 28;//線の色
+    widthjugde = 0.3;//線の太さ
+    aj = 1.0;//線の透明度
     NSInteger meshsize = [meshjsonobj[@"MeshCharts"] count];
     for(int k = 0; k < meshsize; k++){
         CLLocationCoordinate2D coors[2];
@@ -104,8 +120,20 @@
         MKPolyline *line = [MKPolyline polylineWithCoordinates:coors count:2];
         [myMapView addOverlay:line];
     }
+
+}
+
+//海図情報の(1分ごとに更新する必要のない)jsonデータを取得
+- (void) readMarine{
     
     //マリンチャートの情報を取得
+    /*NSURL *path_marine = [NSURL URLWithString:@"http://175.184.26.216/MarineChart.json"];
+    NSURLRequest *marequest = [NSURLRequest requestWithURL:path_marine];
+    NSURLResponse *mresponse;
+    NSData *marinejson = [NSURLConnection sendSynchronousRequest:marequest returningResponse:&mresponse error:nil];
+    NSDictionary *marinejsonobj = [NSJSONSerialization JSONObjectWithData:marinejson options:0 error:nil];*/
+
+    //ログデータ
     NSString *path_marine = [[NSBundle mainBundle] pathForResource:@"MarineChart" ofType:@"txt"];
     NSData *marinejson = [NSData dataWithContentsOfFile:path_marine];
     NSMutableDictionary *marinejsonobj = [NSJSONSerialization JSONObjectWithData:marinejson options:0 error:nil];
@@ -117,6 +145,8 @@
     //ID4 等深線 水色(51,158,255)
     //ID5 メッシュチャート (51,204,255)
     
+    widthjugde = 1.0;//線の太さ
+    aj = 1.0;//線の透明度
     NSInteger marinesize = [marinejsonobj[@"MarineCharts"] count];
     UIImage *fuhyouimg = [UIImage imageNamed:@"fuhyou.gif"];
     for(int j = 0; j < marinesize; j++){
@@ -133,7 +163,6 @@
             
             NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
             NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
-            
             
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:ID newSubTitle:ID newimg:fuhyouimg];
             [myMapView addAnnotation:annotation];
@@ -152,7 +181,11 @@
                 NSString *marinelon = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][m][1];
                 marine_point[m] = CLLocationCoordinate2DMake(marinelat.doubleValue,marinelon.doubleValue);
             }
-            colorjugde = ID.intValue;
+            if(ID.integerValue == 0){
+                colorjugde = ID.intValue;
+            }else{
+                colorjugde = ID.intValue + 23;
+            }
             
             MKPolyline *line = [MKPolyline polylineWithCoordinates:marine_point count:size];
             //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
@@ -184,7 +217,8 @@
     NSInteger shipsize = [shipjsonobj[@"ships"] count];
     UIImage *img = [UIImage imageNamed:@"ship_stop_icon_000.png"];
 
-    //
+    aj = 1.0;//線の透明度
+    
     for(int i = 0; i < shipsize; i++){
         NSString *mmsi = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"mmsi"];
         NSString *imo = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"imo"];
@@ -273,12 +307,18 @@
 
 //漁船の(1分ごとに更新する必要のある)jsonデータを取得
 - (void) readBoat{
+    /*NSURL *path_boat = [NSURL URLWithString:@"http://175.184.26.216/boats.json"];
+    NSURLRequest *brequest = [NSURLRequest requestWithURL:path_boat];
+    NSURLResponse *bresponse;
+    NSData *boatjson = [NSURLConnection sendSynchronousRequest:brequest returningResponse:&bresponse error:nil];
+    NSDictionary *boatjsonobj = [NSJSONSerialization JSONObjectWithData:boatjson options:0 error:nil];*/
+    
     //ログデータ
-    //NSString *path_boat = [[NSBundle mainBundle] pathForResource:@"boat" ofType:@"txt"];
     NSString *path_boat = [[NSBundle mainBundle] pathForResource:@"boat" ofType:@"txt"];
     NSData *boatjson = [NSData dataWithContentsOfFile:path_boat];
     NSMutableDictionary *boatjsonobj = [NSJSONSerialization JSONObjectWithData:boatjson options:0 error:nil];
     
+    widthjugde = 0.3;//線の太さ
     NSInteger boatsize = [boatjsonobj[@"boats"] count];
     
     for(int p = 0; p < boatsize; p++){
@@ -380,12 +420,50 @@
             NSString *bplon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][q][1];
             bppoint[q] = CLLocationCoordinate2DMake(bplat.doubleValue,bplon.doubleValue);
         }
-        colorjugde = 6;
+        colorjugde = bid.intValue;
+        aj = 0.4;//線の透明度
         MKPolyline *line = [MKPolyline polylineWithCoordinates:bppoint count:mbsize - 1];
+        //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
+        [myMapView addOverlay:line];
+
+    }
+}
+
+//漁網を表示
+- (void)readFishingNet{
+    /*NSURL *FNpath = [NSURL URLWithString:@"http://175.184.26.216/FishingNets.json"];
+    NSURLRequest *FNrequest = [NSURLRequest requestWithURL:FNpath];
+    NSURLResponse *FNresponse;
+    NSData *FNjson = [NSURLConnection sendSynchronousRequest:FNrequest returningResponse:&FNresponse error:nil];
+    NSDictionary *FNjsonobj = [NSJSONSerialization JSONObjectWithData:FNjson options:0 error:nil];*/
+    
+    //ログデータ
+    NSString *path_FN = [[NSBundle mainBundle] pathForResource:@"fishNet" ofType:@"txt"];
+    NSData *FNjson = [NSData dataWithContentsOfFile:path_FN];
+    NSMutableDictionary *FNjsonobj = [NSJSONSerialization JSONObjectWithData:FNjson options:0 error:nil];
+    
+    widthjugde = 1.0;//線の太さ
+    aj = 1.0;//線の透明度
+    NSInteger FNsize = [FNjsonobj[@"FishingNets"] count];
+    
+    for(int r = 0; r < FNsize; r++){
+        NSString *FNid = FNjsonobj[@"FishingNets"][r][@"FishingNet"][@"id"];
+        
+        NSInteger FNllsize = [FNjsonobj[@"FishingNets"][r][@"FishingNet"][@"latlngs"] count];
+        CLLocationCoordinate2D FNpoint[FNllsize];
+        
+        for(int s = 0; s < FNllsize; s++){
+            NSString *FNlat = FNjsonobj[@"FishingNets"][r][@"FishingNet"][@"latlngs"][s][0];
+            NSString *FNlon = FNjsonobj[@"FishingNets"][r][@"FishingNet"][@"latlngs"][s][1];
+            FNpoint[s] = CLLocationCoordinate2DMake(FNlat.doubleValue,FNlon.doubleValue);
+        }
+        colorjugde = FNid.intValue;
+        MKPolyline *line = [MKPolyline polylineWithCoordinates:FNpoint count:FNllsize];
         //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
         [myMapView addOverlay:line];
     }
 }
+
 
 
 //線を引く際に呼ばれる
@@ -393,42 +471,15 @@
 {
     MKPolylineView *view = [[MKPolylineView alloc]initWithOverlay:overlay];
     
-    view.lineWidth = 1.0;
-    switch (colorjugde) {
-        case (0): //ID0 海苔ヒビ 黄色(255,255,0)
-            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (1): //ID1 浮標 アイコン(赤(255,0,0))
-            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (2): //ID2 白(255,255,255)
-            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:1.0];
-            break;
-            
-        case (3): //ID3 防波堤 黒(0,0,0)
-            view.strokeColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (4): //ID4 等深線 水色(51,158,255)
-            view.strokeColor = [UIColor colorWithRed:0.20 green:0.60 blue:1.00 alpha:1.0];
-            view.lineWidth = 0.3;//船舶、漁船針路、漁船航跡も(透明度も)0.3
-            break;
-            
-        case (5): //ID5 メッシュチャート (51,204,255)
-            view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
-            view.lineWidth = 0.3;
-            break;
-        
-        case (6): //01 漁船 アイコン(赤(255,0,0))
-            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:0.3];
-            view.lineWidth = 0.3;
-            break;
-            
-    }
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate]; // デリゲート呼び出し
+    appDelegate.AlphaJugde = &(aj); // デリゲートプロパティに値代入
     
-    myMapView.showsUserLocation = NO;
+    view.lineWidth = widthjugde;//線の太さの判定
+    //view.strokeColor = appDelegate.ColorArray[colorjugde];//線の色の判定
+    NSArray *ColorArray2 = [APP_DELEGATE ColorArray];
+    view.strokeColor = ColorArray2[colorjugde];//線の色の判定
+    
+    myMapView.showsUserLocation = NO;//現在位置を表示しない
     
     return view;
 }
@@ -483,7 +534,6 @@
         nextViewController.setime = setime;
     }
 }
-
 
 - (void)refresh{
     //CustomAnnotation *annotation = [CustomAnnotation alloc];
