@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (readonly, strong, nonatomic) NSArray *ColorArray;
+@property (readonly, strong, nonatomic) NSArray *WidAlArray;
 @property (nonatomic) double *AlphaJugde;
 
 

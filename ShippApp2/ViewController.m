@@ -106,6 +106,7 @@
      NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
     
     colorjugde = 28;
+    widthjugde = 0.3;//線の太さ
     NSInteger meshsize = [meshjsonobj[@"MeshCharts"] count];
     for(int k = 0; k < meshsize; k++){
         CLLocationCoordinate2D coors[2];
@@ -146,6 +147,7 @@
     //ID4 等深線 水色(51,158,255)
     //ID5 メッシュチャート (51,204,255)
     
+    widthjugde = 1.0;//線の太さ
     NSInteger marinesize = [marinejsonobj[@"MarineCharts"] count];
     UIImage *fuhyouimg = [UIImage imageNamed:@"fuhyou.gif"];
     for(int j = 0; j < marinesize; j++){
@@ -162,7 +164,6 @@
             
             NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
             NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
-            
             
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:ID newSubTitle:ID newimg:fuhyouimg];
             [myMapView addAnnotation:annotation];
@@ -317,6 +318,7 @@
     NSData *boatjson = [NSData dataWithContentsOfFile:path_boat];
     NSMutableDictionary *boatjsonobj = [NSJSONSerialization JSONObjectWithData:boatjson options:0 error:nil];
     
+    widthjugde = 0.3;//線の太さ
     NSInteger boatsize = [boatjsonobj[@"boats"] count];
     
     for(int p = 0; p < boatsize; p++){
@@ -438,6 +440,7 @@
     NSData *FNjson = [NSData dataWithContentsOfFile:path_FN];
     NSMutableDictionary *FNjsonobj = [NSJSONSerialization JSONObjectWithData:FNjson options:0 error:nil];
     
+    widthjugde = 1.0;//線の太さ
     NSInteger FNsize = [FNjsonobj[@"FishingNets"] count];
     
     for(int r = 0; r < FNsize; r++){
@@ -467,7 +470,8 @@
     
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate]; // デリゲート呼び出し
     
-    view.lineWidth = 1.0;
+    
+    view.lineWidth = widthjugde;
     view.strokeColor = appDelegate.ColorArray[colorjugde];
 
     
