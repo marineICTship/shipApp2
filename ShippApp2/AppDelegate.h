@@ -11,5 +11,8 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (readonly, strong, nonatomic) NSArray *ColorArray;
+@property (nonatomic) double *AlphaJugde;
+
 
 @end

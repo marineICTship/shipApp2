@@ -23,6 +23,7 @@
     //NSString *swidth;
     //NSString *sflag;
     NSString *setime;
+
 }
 
 @property (strong, nonatomic) IBOutlet MKMapView *myMapView;

@@ -10,9 +10,12 @@
 #import "CustomAnnotation.h"
 #import "CustomOverlay.h"
 #import "DetailTableViewController.h"
+#import "AppDelegate.h"
 
 
-@interface ViewController ()<MKMapViewDelegate>
+@interface ViewController ()<MKMapViewDelegate>{
+
+}
 
 @property (nonatomic, retain) MKMapView *mapView;
 
@@ -21,6 +24,7 @@
 
 @implementation ViewController
 @synthesize myMapView,colorjugde;
+
 //@synthesize mmsi,imo,name,allsign,slat60,slon60,sspeed,scourse,stime;
 //slength,swidth,flag
 
@@ -29,7 +33,12 @@
 //アプリ起動時に呼ばれる
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    // Do any additional setup after loading the vie
+    double a = 1.0;
+    
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate]; // デリゲート呼び出し
+    appDelegate.AlphaJugde = &(a); // デリゲートプロパティに値代入
+    
     
     //mapCreate,readMarine,readShip,readBoatを読み込む
     [self createMap];
@@ -96,7 +105,7 @@
      NSData *meshjson = [NSData dataWithContentsOfFile:path_mesh];
      NSMutableDictionary *meshjsonobj = [NSJSONSerialization JSONObjectWithData:meshjson options:0 error:nil];
     
-    colorjugde = 5;
+    colorjugde = 28;
     NSInteger meshsize = [meshjsonobj[@"MeshCharts"] count];
     for(int k = 0; k < meshsize; k++){
         CLLocationCoordinate2D coors[2];
@@ -172,7 +181,11 @@
                 NSString *marinelon = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs"][m][1];
                 marine_point[m] = CLLocationCoordinate2DMake(marinelat.doubleValue,marinelon.doubleValue);
             }
-            colorjugde = ID.intValue;
+            if(ID.integerValue == 0){
+                colorjugde = ID.intValue;
+            }else{
+                colorjugde = ID.intValue + 23;
+            }
             
             MKPolyline *line = [MKPolyline polylineWithCoordinates:marine_point count:size];
             //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
@@ -405,7 +418,7 @@
             NSString *bplon = boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"][q][1];
             bppoint[q] = CLLocationCoordinate2DMake(bplat.doubleValue,bplon.doubleValue);
         }
-        colorjugde = 6;
+        colorjugde = bid.intValue;
         MKPolyline *line = [MKPolyline polylineWithCoordinates:bppoint count:mbsize - 1];
         //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
         [myMapView addOverlay:line];
@@ -438,7 +451,7 @@
             NSString *FNlon = FNjsonobj[@"FishingNets"][r][@"FishingNet"][@"latlngs"][s][1];
             FNpoint[s] = CLLocationCoordinate2DMake(FNlat.doubleValue,FNlon.doubleValue);
         }
-        colorjugde = 7;
+        colorjugde = FNid.intValue;
         MKPolyline *line = [MKPolyline polylineWithCoordinates:FNpoint count:FNllsize];
         //CustomOverlay *annotation = [[CustomOverlay alloc] initWithCoordinates:marine_point withstroke:1.0 newstrokeColor:sc newcount:size];
         [myMapView addOverlay:line];
@@ -452,45 +465,11 @@
 {
     MKPolylineView *view = [[MKPolylineView alloc]initWithOverlay:overlay];
     
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate]; // デリゲート呼び出し
+    
     view.lineWidth = 1.0;
-    switch (colorjugde) {
-        case (0): //ID0 海苔ヒビ 黄色(255,255,0)
-            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (1): //ID1 浮標 アイコン(赤(255,0,0))
-            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (2): //ID2 白(255,255,255)
-            view.strokeColor = [UIColor colorWithRed:1.00 green:1.00 blue:1.00 alpha:1.0];
-            break;
-            
-        case (3): //ID3 防波堤 黒(0,0,0)
-            view.strokeColor = [UIColor colorWithRed:0.00 green:0.00 blue:0.00 alpha:1.0];
-            break;
-            
-        case (4): //ID4 等深線 水色(51,158,255)
-            view.strokeColor = [UIColor colorWithRed:0.20 green:0.60 blue:1.00 alpha:1.0];
-            view.lineWidth = 0.3;//船舶、漁船針路、漁船航跡も(透明度も)0.3
-            break;
-            
-        case (5): //ID5 メッシュチャート (51,204,255)
-            view.strokeColor = [UIColor colorWithRed:0.20 green:0.80 blue:1.00 alpha:1.0];
-            view.lineWidth = 0.3;
-            break;
-        
-        case (6): //01 漁船 アイコン(赤(255,0,0))
-            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:0.3];
-            view.lineWidth = 0.3;
-            break;
-        
-        case (7): //01 漁網 アイコン(赤(255,0,0))
-            view.strokeColor = [UIColor colorWithRed:1.00 green:0.00 blue:0.00 alpha:1.0];
-            //view.lineWidth = 0.3;
-            break;
-            
-    }
+    view.strokeColor = appDelegate.ColorArray[colorjugde];
+
     
     myMapView.showsUserLocation = NO;
     
