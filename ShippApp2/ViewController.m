@@ -236,27 +236,29 @@
         NSString *stime = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"timestamp"];
         NSString *shipicon;
         //NSLog(@"[%d] [%@] [%@] [%@] ",i,sspeed,callsign,scourse);
-        double jsspeed = sspeed.doubleValue;
+        float fsspeed = sspeed.doubleValue;
+        NSString *ssspeed = [NSString stringWithFormat:@"%.1f", fsspeed];
+        NSInteger iscourse = scourse.integerValue; //courseのままでは不可
+        NSString *sscourse = [NSString stringWithFormat:@"%ld", iscourse];
         
         //アイコンの設定
-        if(jsspeed >= 1.0){
+        if(fsspeed >= 1.0){
             NSString *shipicon00 = @"ship_icon_";
             NSString *shipicon0;
             NSString *radian;
             NSString *ipng = @".png";
-            NSInteger iscourse = scourse.integerValue; //courseのままでは不可
-            NSString *jscourse = [NSString stringWithFormat:@"%ld", iscourse];
+
             
             if(iscourse > 0 && iscourse < 10){
                 //文字列の結合 例 005,
-                radian = [@"00" stringByAppendingString:jscourse];
+                radian = [@"00" stringByAppendingString:sscourse];
                 
             }else if(iscourse >= 10 && iscourse < 100){
                 //文字列の結合 例 010
-                radian = [@"0" stringByAppendingString:jscourse];
+                radian = [@"0" stringByAppendingString:sscourse];
                 
             }else if(iscourse >= 100 && iscourse < 360){
-                radian = jscourse;
+                radian = sscourse;
                 
             }else{
                 radian = @"000";
@@ -276,6 +278,11 @@
         point.latitude = slat.doubleValue;
         point.longitude = slon.doubleValue;
         
+        NSString *shipsubtitles = [ssspeed stringByAppendingString:@"kt "];//スピード
+        NSString *shipsubtitlec = [sscourse stringByAppendingString:@"°   "];//コース
+        NSString *shipsubtitlesc = [shipsubtitles stringByAppendingString:shipsubtitlec];
+        NSString *shipsubtitle = [shipsubtitlesc stringByAppendingString:callsign];
+        
         //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
         //UIImage *img = [UIImage imageNamed:shipicon];
         //[pin setCoordinate:point];
@@ -285,7 +292,7 @@
         
         //CustomAnnotationクラスの初期化
         //CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
-        annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
+        annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:shipsubtitle newimg:shipimg];
         //annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
