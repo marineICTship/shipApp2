@@ -337,7 +337,9 @@
         NSString *bcourse = boatjsonobj[@"boats"][p][@"Boat"][@"course"];
         NSString *btime = boatjsonobj[@"boats"][p][@"Boat"][@"timestamp"];
         UIImage *boatimg;
-        double jbspeed = bspeed.doubleValue;
+
+        float fbspeed = bspeed.floatValue;
+        NSString *sbspeed = [NSString stringWithFormat:@"%.1f", fbspeed];
         
         NSInteger mbsize = [boatjsonobj[@"boats"][p][@"Boat"][@"latlngs"] count]; //mark
         
@@ -345,12 +347,12 @@
         NSString *bpng = @".png";
         NSString *radian;
         NSString *boaticon;
-        NSInteger bicourse = bcourse.integerValue; //courseのままでは不可
-        NSString *bscourse = [NSString stringWithFormat:@"%ld", bicourse];
+        NSInteger ibcourse = bcourse.integerValue; //courseのままでは不可
+        NSString *sbcourse = [NSString stringWithFormat:@"%ld", ibcourse];
         
         //アプリ内にpngファイルがある場合
         //if(){}一日以上経過していたらoutdata
-        if(jbspeed >= 2.0){
+        if(fbspeed >= 2.0){
             NSString *boat = @"boat";
             NSString *radian2;
             NSString *radian3;
@@ -358,7 +360,7 @@
             //文字列の結合 例 boat01,boat01_,boat01_1,boat01_1.png
             radian = [boat stringByAppendingString:bid];
             radian2 = [radian stringByAppendingString:under];
-            radian3 = [radian2 stringByAppendingString:bscourse];
+            radian3 = [radian2 stringByAppendingString:sbcourse];
             //boaticon = [radian3 stringByAppendingString:bpng];//
             
             boaticon = @"boat_move_icon.png";//
@@ -417,8 +419,12 @@
         bwpoint.latitude = bwlat.doubleValue;
         bwpoint.longitude = bwlon.doubleValue;
         
+        NSString *boatsubtitles = [sbspeed stringByAppendingString:@"kt "];//スピード
+        NSString *boatsubtitlec = [sbcourse stringByAppendingString:@"° "];//コース
+        NSString *boatsubtitle = [boatsubtitles stringByAppendingString:boatsubtitlec];
+        
         //CustomAnnotationを初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:blat60 newSubTitle:blon60 newimg:boatimg];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btime newSubTitle:boatsubtitle newimg:boatimg];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
         
