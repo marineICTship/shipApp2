@@ -24,6 +24,7 @@
 }
 
 @property (nonatomic)NSString *semmsi;
+@property (nonatomic)NSString *seimo;
 @property (nonatomic)NSString *sename;
 @property (nonatomic)NSString *secallsign;
 @property (nonatomic)NSString *selat60;
