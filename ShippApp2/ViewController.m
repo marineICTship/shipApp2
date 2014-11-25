@@ -25,6 +25,8 @@
 @implementation ViewController
 @synthesize myMapView,colorjugde,aj;
 
+NSString* const EmptyLetter = @"";//EmptyLetterを定義
+//NSArray* const EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
 //@synthesize mmsi,imo,name,allsign,slat60,slon60,sspeed,scourse,stime;
 //slength,swidth,flag
 
@@ -164,7 +166,11 @@
             NSString *marinelat60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][0];
             NSString *marinelon60 = marinejsonobj[@"MarineCharts"][j][@"Marine"][@"latlngs60"][0][1];
             
-            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:ID newSubTitle:ID newimg:fuhyouimg];
+            //NSString *marinelats = [marinelat60 stringByAppendingString:marinelon60];
+
+            EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
+            
+            CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:marinelat60 newSubTitle:marinelon60 newimg:fuhyouimg shipinfo:EmptyArray];
             [myMapView addAnnotation:annotation];
             
 
@@ -283,6 +289,10 @@
         NSString *shipsubtitlesc = [shipsubtitles stringByAppendingString:shipsubtitlec];
         NSString *shipsubtitle = [shipsubtitlesc stringByAppendingString:callsign];
         
+        
+        shipinfo2 = [NSArray arrayWithObjects:mmsi, imo, name, callsign, slat60, slon60, ssspeed, sscourse, stime ,nil];
+        //shipinfo2 = [NSArray arrayWithObjects:mmsi, imo, name,nil];
+        
         //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
         //UIImage *img = [UIImage imageNamed:shipicon];
         //[pin setCoordinate:point];
@@ -292,7 +302,7 @@
         
         //CustomAnnotationクラスの初期化
         //CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:stime newimg:shipimg];
-        annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:shipsubtitle newimg:shipimg];
+        annotation = [[CustomAnnotation alloc] initWithCoordinates:point newTitle:name newSubTitle:shipsubtitle newimg:shipimg shipinfo:shipinfo2];
         //annotationをマップに追加
         [myMapView addAnnotation:annotation];
     }
@@ -423,8 +433,9 @@
         NSString *boatsubtitlec = [sbcourse stringByAppendingString:@"° "];//コース
         NSString *boatsubtitle = [boatsubtitles stringByAppendingString:boatsubtitlec];
         
+        EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
         //CustomAnnotationを初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btime newSubTitle:boatsubtitle newimg:boatimg];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btime newSubTitle:boatsubtitle newimg:boatimg shipinfo:EmptyArray];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
         
@@ -521,14 +532,20 @@
     return av;
 }
 
+- (void)mapView:(MKMapView *)mapView
+didSelectAnnotationView:(MKAnnotationView *)view{ //ピンが選択されたときに呼ばれる
+}
+
 - (void) mapView:(MKMapView*)_mapView annotationView:(MKAnnotationView*)annotationView calloutAccessoryControlTapped:(UIControl*)control {
     // タップしたときの処理
     // annotationView.annotation でどのアノテーションか判定可能
     CustomAnnotation* pin = (CustomAnnotation*)annotationView.annotation;
-    NSLog(@"title:%@",pin.subtitle);
+    //NSLog(@"title:%@",pin.subtitle);
     
-    sename = pin.title;
-    setime = pin.subtitle;
+    //sename = pin.title;
+    //setime = pin.subtitle;
+    shipinfo3 = ((CustomAnnotation*)annotationView.annotation).shipinfo;
+    NSLog(@"title:%@",shipinfo3[0]);
     //mmsi,imo,
     //,allsign,slat60,slon60,sspeed,scourse,stime;
     
@@ -543,8 +560,9 @@
     if ( [[segue identifier] isEqualToString:@"detail"] ) {
         DetailTableViewController *nextViewController = [segue destinationViewController];
         //ここで遷移先ビューのクラスの変数receiveStringに値を渡している
-        nextViewController.sename = sename;
-        nextViewController.setime = setime;
+        //nextViewController.sename = shipinfo3[2];
+        //nextViewController.setime = shipinfo3[0];
+        nextViewController.shipinfo3 = shipinfo3;
     }
 }
 

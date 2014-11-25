@@ -9,29 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface DetailTableViewController : UITableViewController{
-    NSString *semmsi;
-    NSString *seimo;
-    NSString *sename;
-    NSString *secallsign;
-    NSString *selat60;
-    NSString *selon60;
-    NSString *sespeed;
-    NSString *secourse;
-    //NSString *slength;
-    //NSString *swidth;
-    //NSString *sflag;
-    NSString *setime;
+
+    NSArray *shipinfo3;
 }
 
-@property (nonatomic)NSString *semmsi;
-@property (nonatomic)NSString *seimo;
-@property (nonatomic)NSString *sename;
-@property (nonatomic)NSString *secallsign;
-@property (nonatomic)NSString *selat60;
-@property (nonatomic)NSString *selon60;
-@property (nonatomic)NSString *sespeed;
-@property (nonatomic)NSString *secourse;
-@property (nonatomic)NSString *setime;
+@property (nonatomic)NSArray *shipinfo3;
 
 
 @end
