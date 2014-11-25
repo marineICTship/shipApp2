@@ -168,7 +168,7 @@ NSString* const EmptyLetter = @"";//EmptyLetterを定義
             
             //NSString *marinelats = [marinelat60 stringByAppendingString:marinelon60];
 
-            EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
+            EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"",@"fuhyou", nil];
             
             CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:fuhyou_point newTitle:marinelat60 newSubTitle:marinelon60 newimg:fuhyouimg shipinfo:EmptyArray];
             [myMapView addAnnotation:annotation];
@@ -290,7 +290,7 @@ NSString* const EmptyLetter = @"";//EmptyLetterを定義
         NSString *shipsubtitle = [shipsubtitlesc stringByAppendingString:callsign];
         
         
-        shipinfo2 = [NSArray arrayWithObjects:mmsi, imo, name, callsign, slat60, slon60, ssspeed, sscourse, stime ,nil];
+        shipinfo2 = [NSArray arrayWithObjects:mmsi, imo, name, callsign, slat60, slon60, ssspeed, sscourse, stime , @"ship", nil];
         //shipinfo2 = [NSArray arrayWithObjects:mmsi, imo, name,nil];
         
         //MKPointAnnotation *pin = [[MKPointAnnotation alloc]init];
@@ -433,7 +433,7 @@ NSString* const EmptyLetter = @"";//EmptyLetterを定義
         NSString *boatsubtitlec = [sbcourse stringByAppendingString:@"° "];//コース
         NSString *boatsubtitle = [boatsubtitles stringByAppendingString:boatsubtitlec];
         
-        EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", nil];
+        EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", @"boat",nil];
         //CustomAnnotationを初期化
         CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btime newSubTitle:boatsubtitle newimg:boatimg shipinfo:EmptyArray];
         // annotationをマップに追加
@@ -525,8 +525,13 @@ NSString* const EmptyLetter = @"";//EmptyLetterを定義
         //av.image = [UIImage imageNamed:@"fuhyou.gif"];
         av.image = ((CustomAnnotation*)annotation).img;//アノテーションの画像を指定する
         av.canShowCallout = YES;  // ピンタップ時にコールアウトを表示する
-        UIButton *b = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-        av.rightCalloutAccessoryView = b;
+        
+        NSString *ShipBoatFuhyou = ((CustomAnnotation*)annotation).shipinfo[9];
+        if ([@"ship" isEqualToString:ShipBoatFuhyou]) {//船舶ならボタンを表示する
+            //NSLog(@"同じ文字列です");
+            UIButton *Rbutton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+            av.rightCalloutAccessoryView = Rbutton;
+        }
         
     }
     return av;
@@ -539,15 +544,13 @@ didSelectAnnotationView:(MKAnnotationView *)view{ //ピンが選択されたと�
 - (void) mapView:(MKMapView*)_mapView annotationView:(MKAnnotationView*)annotationView calloutAccessoryControlTapped:(UIControl*)control {
     // タップしたときの処理
     // annotationView.annotation でどのアノテーションか判定可能
-    CustomAnnotation* pin = (CustomAnnotation*)annotationView.annotation;
+    //CustomAnnotation* pin = (CustomAnnotation*)annotationView.annotation;
     //NSLog(@"title:%@",pin.subtitle);
     
     //sename = pin.title;
     //setime = pin.subtitle;
     shipinfo3 = ((CustomAnnotation*)annotationView.annotation).shipinfo;
     NSLog(@"title:%@",shipinfo3[0]);
-    //mmsi,imo,
-    //,allsign,slat60,slon60,sspeed,scourse,stime;
     
     [self performSegueWithIdentifier:@"detail" sender:self];
 
@@ -560,8 +563,6 @@ didSelectAnnotationView:(MKAnnotationView *)view{ //ピンが選択されたと�
     if ( [[segue identifier] isEqualToString:@"detail"] ) {
         DetailTableViewController *nextViewController = [segue destinationViewController];
         //ここで遷移先ビューのクラスの変数receiveStringに値を渡している
-        //nextViewController.sename = shipinfo3[2];
-        //nextViewController.setime = shipinfo3[0];
         nextViewController.shipinfo3 = shipinfo3;
     }
 }
