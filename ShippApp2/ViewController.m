@@ -434,8 +434,15 @@ NSString* const EmptyLetter = @"";//EmptyLetterを定義
         NSString *boatsubtitle = [boatsubtitles stringByAppendingString:boatsubtitlec];
         
         EmptyArray = [NSArray arrayWithObjects:@"", @"", @"", @"", @"", @"", @"", @"", @"", @"boat",nil];
+        
+        
+        NSArray *btitle0 = [btime componentsSeparatedByString:@"/"];//西暦、月、その他で分割
+        //NSLog(@"%@,%@,%@",btitle0[0],btitle0[1],btitle0[2]);
+        NSString *btitle1 =[btitle0[1] stringByAppendingString:@"/"];// 月と日の間の/が消えてるので追加
+        NSString *btitle =[btitle1 stringByAppendingString:btitle0[2]];//全てを繋げる
+        
         //CustomAnnotationを初期化
-        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btime newSubTitle:boatsubtitle newimg:boatimg shipinfo:EmptyArray];
+        CustomAnnotation *annotation = [[CustomAnnotation alloc] initWithCoordinates:bwpoint newTitle:btitle newSubTitle:boatsubtitle newimg:boatimg shipinfo:EmptyArray];
         // annotationをマップに追加
         [myMapView addAnnotation:annotation];
         
