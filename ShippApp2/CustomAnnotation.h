@@ -17,6 +17,7 @@
     //MKPinAnnotationColor pinColor;
     
     UIImage *img;
+    NSArray *shipinfo;
 }
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
@@ -24,8 +25,9 @@
 @property (nonatomic)MKPinAnnotationColor pinColor;
 @property (nonatomic)UIImage *shipimg;
 @property (nonatomic)UIImage *img;
+@property (nonatomic)NSArray *shipinfo;
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)co newTitle:(NSString *)t newSubTitle:(NSString *)st newimg:(UIImage *)img;
+- (id)initWithCoordinates:(CLLocationCoordinate2D)co newTitle:(NSString *)t newSubTitle:(NSString *)st newimg:(UIImage *)img shipinfo:(NSArray *)si;
 
 @end
 

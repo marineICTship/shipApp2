@@ -13,33 +13,19 @@
     int colorjugde;
     double widthjugde;
     double aj;
-    NSString *semmsi;
-    NSString *seimo;
-    NSString *sename;
-    NSString *secallsign;
-    NSString *selat60;
-    NSString *selon60;
-    NSString *sespeed;
-    NSString *secourse;
-    //NSString *slength;
-    //NSString *swidth;
-    //NSString *sflag;
-    NSString *setime;
+    NSArray *shipinfo2;
+    NSArray *shipinfo3;
+    NSArray *EmptyArray;
 
 }
+extern NSString* const EmptyLetter;
 
 @property (strong, nonatomic) IBOutlet MKMapView *myMapView;
 @property (nonatomic)int colorjugde;
 @property (nonatomic)double widthjugde;
 @property (nonatomic)double aj;
-@property (nonatomic)NSString *semmsi;
-@property (nonatomic)NSString *seimo;
-@property (nonatomic)NSString *sename;
-@property (nonatomic)NSString *secallsign;
-@property (nonatomic)NSString *selat60;
-@property (nonatomic)NSString *selon60;
-@property (nonatomic)NSString *sespeed;
-@property (nonatomic)NSString *secourse;
-@property (nonatomic)NSString *setime;
+@property (nonatomic)NSArray *shipinfo2;
+@property (nonatomic)NSArray *shipinfo3;
+@property (nonatomic)NSArray *EmptyArray;
 
 @end

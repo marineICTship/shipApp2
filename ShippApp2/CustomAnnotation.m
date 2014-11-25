@@ -10,9 +10,9 @@
 
 @implementation CustomAnnotation
 
-@synthesize coordinate, title,subtitle,pinColor,img;
+@synthesize coordinate, title,subtitle,pinColor,img,shipinfo;
 
-- (id)initWithCoordinates:(CLLocationCoordinate2D)co newTitle:(NSString *)t newSubTitle:(NSString *)st newimg:(UIImage *)nimg{
+- (id)initWithCoordinates:(CLLocationCoordinate2D)co newTitle:(NSString *)t newSubTitle:(NSString *)st newimg:(UIImage *)nimg shipinfo:(NSArray *)si{
     self = [super self];
     
     if(self != nil)
@@ -22,6 +22,7 @@
         subtitle = st;
         //pinColor = *PC;
         img = nimg;
+        shipinfo = si;
     }
     
     return self;
