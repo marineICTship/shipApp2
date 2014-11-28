@@ -27,7 +27,7 @@
 #import "AMSlideMenuLeftMenuSegue.h"
 
 #import "AMSlideMenuContentSegue.h"
-#import "AMSlideMenuLeftTableViewController.h"
+#import "AMSlideMenuLeftViewController.h"
 #import "AMSlideMenuMainViewController.h"
 
 @implementation AMSlideMenuLeftMenuSegue
@@ -39,7 +39,7 @@
 - (void)perform
 {
     AMSlideMenuMainViewController* mainVC = self.sourceViewController;
-    AMSlideMenuLeftTableViewController* leftMenu = self.destinationViewController;
+    AMSlideMenuLeftViewController* leftMenu = self.destinationViewController;
     
     mainVC.leftMenu = leftMenu;
     leftMenu.mainVC = mainVC;
