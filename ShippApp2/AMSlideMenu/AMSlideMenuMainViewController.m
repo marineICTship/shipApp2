@@ -533,7 +533,7 @@ static NSMutableArray *allInstances;
     }
     
     // Disabling scrollsToTop for menu's tableviews
-    self.leftMenu.tableView.scrollsToTop = NO;
+    //self.leftMenu.tableView.scrollsToTop = NO;
     self.rightMenu.tableView.scrollsToTop = NO;
 
 }
@@ -737,7 +737,7 @@ static NSMutableArray *allInstances;
     {
         if ([self primaryMenu] == AMPrimaryMenuLeft)
         {
-            if ([menu isKindOfClass:[AMSlideMenuLeftTableViewController class]])
+            if ([menu isKindOfClass:[AMSlideMenuLeftViewController class]])
             {
                 self.initialViewController = nvc;
             }
@@ -756,7 +756,7 @@ static NSMutableArray *allInstances;
         }
         else if ([self primaryMenu] == AMPrimaryMenuRight)
         {
-            if ([menu isKindOfClass:[AMSlideMenuLeftTableViewController class]] && self.rightMenu)
+            if ([menu isKindOfClass:[AMSlideMenuLeftViewController class]] && self.rightMenu)
             {
                 if (self.currentActiveNVC)
                 {
@@ -829,14 +829,14 @@ static NSMutableArray *allInstances;
     [self closeMenu];
     [self.currentActiveNVC.view addGestureRecognizer:self.panGesture];
     
-    if ([menu isKindOfClass:[AMSlideMenuLeftTableViewController class]])
+    /*if ([menu isKindOfClass:[AMSlideMenuLeftViewController class]])
     {
         [self.rightMenu.tableView deselectRowAtIndexPath:[self.rightMenu.tableView indexPathForSelectedRow] animated:NO];
     }
     else if ([menu isKindOfClass:[AMSlideMenuRightTableViewController class]])
     {
         [self.leftMenu.tableView deselectRowAtIndexPath:[self.leftMenu.tableView indexPathForSelectedRow] animated:NO];
-    }
+    }*/
 }
 
 - (void)openContentViewControllerForMenu:(AMSlideMenu)menu atIndexPath:(NSIndexPath *)indexPath
@@ -846,7 +846,7 @@ static NSMutableArray *allInstances;
         if (!self.leftMenu)
             return;
         
-        [self.leftMenu.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+        //[self.leftMenu.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         
         if ([self respondsToSelector:@selector(navigationControllerForIndexPathInLeftMenu:)]) {
             UINavigationController *navController = [self navigationControllerForIndexPathInLeftMenu:indexPath];

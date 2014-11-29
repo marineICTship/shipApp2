@@ -406,6 +406,7 @@
 		9CEC5B191A17014200516137 /* boat.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CEC5B181A17014200516137 /* boat.txt */; };
 		9CEC5B1B1A17017300516137 /* MeshChart.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CEC5B1A1A17017300516137 /* MeshChart.txt */; };
 		9CEC5B1E1A17018F00516137 /* MarineChart.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9CEC5B1D1A17018F00516137 /* MarineChart.txt */; };
+		9CF0288A1A298E24006E3E37 /* AMSlideMenuLeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF028891A298E24006E3E37 /* AMSlideMenuLeftViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -835,6 +836,8 @@
 		9CEC5B181A17014200516137 /* boat.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = boat.txt; sourceTree = "<group>"; };
 		9CEC5B1A1A17017300516137 /* MeshChart.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MeshChart.txt; sourceTree = "<group>"; };
 		9CEC5B1D1A17018F00516137 /* MarineChart.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MarineChart.txt; sourceTree = "<group>"; };
+		9CF028881A298E24006E3E37 /* AMSlideMenuLeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSlideMenuLeftViewController.h; sourceTree = "<group>"; };
+		9CF028891A298E24006E3E37 /* AMSlideMenuLeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSlideMenuLeftViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -958,6 +961,8 @@
 				9CCAF5021A1512470084C49B /* AMSlideMenuLeftMenuSegue.m */,
 				9CCAF5031A1512470084C49B /* AMSlideMenuLeftTableViewController.h */,
 				9CCAF5041A1512470084C49B /* AMSlideMenuLeftTableViewController.m */,
+				9CF028881A298E24006E3E37 /* AMSlideMenuLeftViewController.h */,
+				9CF028891A298E24006E3E37 /* AMSlideMenuLeftViewController.m */,
 				9CCAF5051A1512470084C49B /* AMSlideMenuMainViewController.h */,
 				9CCAF5061A1512470084C49B /* AMSlideMenuMainViewController.m */,
 				9CCAF5071A1512470084C49B /* AMSlideMenuProtocols.h */,
@@ -1839,6 +1844,7 @@
 				9C22B4211A18F91500DF9F74 /* DetailTableViewController.m in Sources */,
 				9CCAF50E1A1512470084C49B /* AMSlideMenuContentSegue.m in Sources */,
 				9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */,
+				9CF0288A1A298E24006E3E37 /* AMSlideMenuLeftViewController.m in Sources */,
 				9CEC555C1A16DD8100516137 /* CustomAnnotation.m in Sources */,
 				9CCAF5191A1512E80084C49B /* MainVC.m in Sources */,
 				9CCAF5141A1512470084C49B /* UIViewController+AMSlideMenu.m in Sources */,

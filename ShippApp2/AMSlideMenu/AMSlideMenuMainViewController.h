@@ -26,7 +26,7 @@
 
 #import <UIKit/UIKit.h>
 #import "AMSlideMenuProtocols.h"
-#import "AMSlideMenuLeftTableViewController.h"
+#import "AMSlideMenuLeftViewController.h"
 #import "AMSlideMenuRightTableViewController.h"
 
 typedef enum {
@@ -75,7 +75,7 @@ typedef enum {
 
 @property (weak, nonatomic) id<AMSlideMenuDelegate> slideMenuDelegate;
 
-@property (strong, nonatomic) AMSlideMenuLeftTableViewController *leftMenu;
+@property (strong, nonatomic) AMSlideMenuLeftViewController *leftMenu;
 @property (strong, nonatomic) AMSlideMenuRightTableViewController *rightMenu;
 @property (strong, nonatomic) UINavigationController *currentActiveNVC;
 
