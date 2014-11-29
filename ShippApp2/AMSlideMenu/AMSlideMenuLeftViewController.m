@@ -8,15 +8,16 @@
 
 #import "AMSlideMenuLeftViewController.h"
 #import "AMSlideMenuMainViewController.h"
-
 #import "AMSlideMenuContentSegue.h"
 
 @interface AMSlideMenuLeftViewController ()
+@property (strong, nonatomic) NSArray *searchbar;
+
 
 @end
 
 @implementation AMSlideMenuLeftViewController
-@synthesize searchbar;
+@synthesize SearchBar,shipnamearray;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -51,7 +52,15 @@
 */
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 157;
+    
+    if(tableView == self.searchDisplayController.searchResultsTableView){
+        return 157;
+    }else{
+        return 157;
+    }
+    
+    
+    //return 157;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -65,16 +74,51 @@
     NSData *shipjson = [NSData dataWithContentsOfFile:path];
     NSDictionary *shipjsonobj = [NSJSONSerialization JSONObjectWithData:shipjson options:0 error:nil];
     
+
+   
     //cell.textLabel.text = @"表示する文字";
     
+    shipnamearray = [NSMutableArray array];
     
     
-    
+    /*if(tableView == self.searchDisplayController.searchResultsTableView){
+        NSLog(@"od:%@",self.searchbar[0]);
+        //cell.textLabel.text = [self.searchbar objectAtIndex:indexPath.row];
+        //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",self.searchbar[0]];
+        
+    }else{
+        for (int i = 0;i < 156;i++) {
+            NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
+            [shipnamearray addObject:name];
+            
+            if(indexPath.row == i){
+
+                //shipnamearray[i] = name;
+                //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipjsonobj[@"ships"][i][@"Ship"][@"name"]];
+                cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipnamearray[i]];
+                //NSLog(@"%@",shipnamearray[i]);
+            }
+        }
+
+    }*/
+    //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",self.searchbar[0]];
     for (int i = 0;i < 157;i++) {
+        NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
+        [shipnamearray addObject:name];
+        
         if(indexPath.row == i){
-            cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipjsonobj[@"ships"][i][@"Ship"][@"name"]];
+            
+            //shipnamearray[i] = name;
+            //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipjsonobj[@"ships"][i][@"Ship"][@"name"]];
+            cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipnamearray[i]];
+            //NSLog(@"%@",shipnamearray[i]);
         }
     }
+
+    //NSLog(@"str:%@",self.searchbar);
+    
+    
+
     
     //文字の色
     //cell.textLabel.textColor = [UIColor brownColor];
@@ -85,6 +129,21 @@
     
     return cell;
 }
+
+-(void)filterContentForSearchText:(NSString *)searchText scope:(NSString *)scope{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF beginswith[c] %@",searchText];
+    
+    
+    self.searchbar = [shipnamearray filteredArrayUsingPredicate:predicate];
+    NSLog(@"str:%@",self.searchbar);
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString{
+    
+    [self filterContentForSearchText:searchString scope:[[self.searchDisplayController.searchBar scopeButtonTitles]objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    return YES;
+}
+
 
 
 @end
