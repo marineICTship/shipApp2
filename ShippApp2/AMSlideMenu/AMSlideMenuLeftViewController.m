@@ -14,6 +14,7 @@
 @property (strong, nonatomic) NSArray *searchbar;
 
 
+
 @end
 
 @implementation AMSlideMenuLeftViewController
@@ -22,6 +23,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSingleTap:)];
+    self.singleTap.delegate = self;
+    self.singleTap.numberOfTapsRequired = 1;
+    [self.view addGestureRecognizer:self.singleTap];
     
 }
 
@@ -30,6 +35,23 @@
     // Dispose of any resources that can be recreated.
 }
 
+//シングルタップされたらresignFirstResponderでキーボードを閉じる
+-(void)onSingleTap:(UITapGestureRecognizer *)recognizer{
+    [self.textField resignFirstResponder];
+}
+
+//キーボードを表示していない時は、他のジェスチャに影響を与えないように無効化しておく。
+-(BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if (gestureRecognizer == self.singleTap) {
+        // キーボード表示中のみ有効
+        if (self.textField.isFirstResponder) {
+            return YES;
+        } else {
+            return NO;
+        }
+    }
+    return YES;
+}
 
 - (void)openContentNavigationController:(UINavigationController *)nvc
 {
@@ -63,6 +85,8 @@
     
     //return 157;
 }
+
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSString *reuseIdentifire = @"Cell";

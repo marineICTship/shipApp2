@@ -11,7 +11,8 @@
 
 @class AMSlideMenuMainViewController;
 
-@interface AMSlideMenuLeftViewController : ViewController<UISearchDisplayDelegate>
+@interface AMSlideMenuLeftViewController : ViewController<UISearchDisplayDelegate,UITextFieldDelegate, UIGestureRecognizerDelegate>
+
 
 @property (weak, nonatomic) AMSlideMenuMainViewController *mainVC;
 @property (nonatomic)NSMutableArray *shipnamearray;
@@ -20,5 +21,8 @@
 - (void)openContentNavigationController:(UINavigationController *)nvc;
 
 @property (strong, nonatomic) IBOutlet UISearchBar *SearchBar;
+
+@property(nonatomic,strong) UITapGestureRecognizer *singleTap;
+@property (nonatomic,strong) UITextField *textField;
 
 @end
