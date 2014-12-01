@@ -22,6 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -54,7 +55,7 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     
     if(tableView == self.searchDisplayController.searchResultsTableView){
-        return 157;
+        return [self.searchbar count];
     }else{
         return 157;
     }
@@ -79,17 +80,29 @@
     //cell.textLabel.text = @"表示する文字";
     
     shipnamearray = [NSMutableArray array];
+    for (int i = 0;i < 156;i++) {
+        NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
+        [shipnamearray addObject:name];
+    }
     
     
-    /*if(tableView == self.searchDisplayController.searchResultsTableView){
-        NSLog(@"od:%@",self.searchbar[0]);
+    
+   if(tableView == self.searchDisplayController.searchResultsTableView){
+        NSLog(@"od:%@",self.searchbar);
         //cell.textLabel.text = [self.searchbar objectAtIndex:indexPath.row];
-        //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",self.searchbar[0]];
+       NSUInteger cnt = [self.searchbar count];
+       
+       for (int i = 0;i < cnt;i++) {
+           if(indexPath.row == i){
+        cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",self.searchbar[i]];
+           }
+       }
+       
         
     }else{
         for (int i = 0;i < 156;i++) {
-            NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
-            [shipnamearray addObject:name];
+            /*NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
+            [shipnamearray addObject:name];*/
             
             if(indexPath.row == i){
 
@@ -100,9 +113,9 @@
             }
         }
 
-    }*/
+    }
     //cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",self.searchbar[0]];
-    for (int i = 0;i < 157;i++) {
+    /*for (int i = 0;i < 157;i++) {
         NSString *name = (NSString*)shipjsonobj[@"ships"][i][@"Ship"][@"name"];
         [shipnamearray addObject:name];
         
@@ -113,7 +126,7 @@
             cell.textLabel.text = [[NSString alloc] initWithFormat:@"%@",shipnamearray[i]];
             //NSLog(@"%@",shipnamearray[i]);
         }
-    }
+    }*/
 
     //NSLog(@"str:%@",self.searchbar);
     
