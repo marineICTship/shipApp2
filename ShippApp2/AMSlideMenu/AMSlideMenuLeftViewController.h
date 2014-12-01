@@ -11,13 +11,14 @@
 
 @class AMSlideMenuMainViewController;
 
-@interface AMSlideMenuLeftViewController : ViewController
+@interface AMSlideMenuLeftViewController : ViewController<UISearchDisplayDelegate>
 
 @property (weak, nonatomic) AMSlideMenuMainViewController *mainVC;
+@property (nonatomic)NSMutableArray *shipnamearray;
 
 // Only afor non storyboard use
 - (void)openContentNavigationController:(UINavigationController *)nvc;
 
-@property (strong, nonatomic) IBOutlet UISearchBar *searchbar;
+@property (strong, nonatomic) IBOutlet UISearchBar *SearchBar;
 
 @end
