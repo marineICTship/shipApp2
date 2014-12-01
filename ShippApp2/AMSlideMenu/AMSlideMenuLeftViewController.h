@@ -23,6 +23,6 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *SearchBar;
 
 @property(nonatomic,strong) UITapGestureRecognizer *singleTap;
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (nonatomic,strong) UITextField *textField;
 
 @end

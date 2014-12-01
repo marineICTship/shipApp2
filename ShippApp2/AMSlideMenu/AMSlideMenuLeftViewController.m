@@ -12,7 +12,7 @@
 
 @interface AMSlideMenuLeftViewController ()
 @property (strong, nonatomic) NSArray *searchbar;
-@property (weak, nonatomic) IBOutlet UITextField *myTextField;
+
 
 
 @end
