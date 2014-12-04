@@ -1,2 +1,4 @@
 /* Localized versions of Info.plist keys */
 
+CFBundleDisplayName = "ShipAppTest";
+//CFBundleDisplayName = "大阪湾運航さぽ"; //7文字まで
