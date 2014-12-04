@@ -54,19 +54,19 @@
 - (void)configureLeftMenuButton:(UIButton *)button
 {
     CGRect frame = button.frame;
-    frame = CGRectMake(0, 0, 25, 13);
+    frame = CGRectMake(0, 0, 100, 50); //(x,y,w,h)
     button.frame = frame;
     
-   [button setImage:[UIImage imageNamed:@"simpleMenuButton"] forState:UIControlStateNormal];
+   [button setImage:[UIImage imageNamed:@"senpaku_ichiran.png"] forState:UIControlStateNormal];
 }
 
 //右ボタン
 - (void)configureRightMenuButton:(UIButton *)button
 {
     CGRect frame = button.frame;
-    frame = CGRectMake(0, 0, 25, 13);
+    frame = CGRectMake(0, 0, 70, 35);
     button.frame = frame;
-    [button setImage:[UIImage imageNamed:@"simpleMenuButton"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"settei.png"] forState:UIControlStateNormal];
     
 }
 
