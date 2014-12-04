@@ -12,6 +12,9 @@
 		9C5A16721A17166D00FF44AA /* CustomOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C5A16711A17166D00FF44AA /* CustomOverlay.m */; };
 		9C5A16761A1742BC00FF44AA /* boatNull.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16751A1742BC00FF44AA /* boatNull.txt */; };
 		9C5A16781A175C0400FF44AA /* ship_stop_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C5A16771A175C0400FF44AA /* ship_stop_icon.png */; };
+		9CC7F6DD1A306C3100DC304E /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC7F6DA1A306C3100DC304E /* menu.png */; };
+		9CC7F6DE1A306C3100DC304E /* senpaku_ichiran.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC7F6DB1A306C3100DC304E /* senpaku_ichiran.png */; };
+		9CC7F6DF1A306C3100DC304E /* settei.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CC7F6DC1A306C3100DC304E /* settei.png */; };
 		9CCAF4CA1A1512160084C49B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4C91A1512160084C49B /* Foundation.framework */; };
 		9CCAF4CC1A1512160084C49B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4CB1A1512160084C49B /* CoreGraphics.framework */; };
 		9CCAF4CE1A1512160084C49B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9CCAF4CD1A1512160084C49B /* UIKit.framework */; };
@@ -427,6 +430,9 @@
 		9C5A16711A17166D00FF44AA /* CustomOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomOverlay.m; sourceTree = "<group>"; };
 		9C5A16751A1742BC00FF44AA /* boatNull.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = boatNull.txt; sourceTree = "<group>"; };
 		9C5A16771A175C0400FF44AA /* ship_stop_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ship_stop_icon.png; sourceTree = "<group>"; };
+		9CC7F6DA1A306C3100DC304E /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menu.png; sourceTree = "<group>"; };
+		9CC7F6DB1A306C3100DC304E /* senpaku_ichiran.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = senpaku_ichiran.png; sourceTree = "<group>"; };
+		9CC7F6DC1A306C3100DC304E /* settei.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settei.png; sourceTree = "<group>"; };
 		9CCAF4C61A1512160084C49B /* ShippApp2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShippApp2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9CCAF4C91A1512160084C49B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9CCAF4CB1A1512160084C49B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1348,6 +1354,9 @@
 		9CEC5B0A1A17005D00516137 /* else_icon */ = {
 			isa = PBXGroup;
 			children = (
+				9CC7F6DA1A306C3100DC304E /* menu.png */,
+				9CC7F6DB1A306C3100DC304E /* senpaku_ichiran.png */,
+				9CC7F6DC1A306C3100DC304E /* settei.png */,
 				9CEC5B0B1A17005D00516137 /* boat_move_icon.png */,
 				9CEC5B0C1A17005D00516137 /* boat_outdate_icon.png */,
 				9CEC5B0D1A17005D00516137 /* boat_stop_icon.png */,
@@ -1471,9 +1480,11 @@
 				9CEC59C01A16FF7D00516137 /* ship_icon_030.png in Resources */,
 				9CEC5A681A16FF7D00516137 /* ship_icon_198.png in Resources */,
 				9CEC5A9C1A16FF7D00516137 /* ship_icon_250.png in Resources */,
+				9CC7F6DF1A306C3100DC304E /* settei.png in Resources */,
 				9CEC5A8F1A16FF7D00516137 /* ship_icon_237.png in Resources */,
 				9CEC59E51A16FF7D00516137 /* ship_icon_067.png in Resources */,
 				9CEC5A731A16FF7D00516137 /* ship_icon_209.png in Resources */,
+				9CC7F6DD1A306C3100DC304E /* menu.png in Resources */,
 				9CEC5A6F1A16FF7D00516137 /* ship_icon_205.png in Resources */,
 				9CEC5A0A1A16FF7D00516137 /* ship_icon_104.png in Resources */,
 				9CEC59B81A16FF7D00516137 /* ship_icon_022.png in Resources */,
@@ -1664,6 +1675,7 @@
 				9CEC5AA71A16FF7D00516137 /* ship_icon_261.png in Resources */,
 				9CEC5A691A16FF7D00516137 /* ship_icon_199.png in Resources */,
 				9CEC5AD11A16FF7D00516137 /* ship_icon_303.png in Resources */,
+				9CC7F6DE1A306C3100DC304E /* senpaku_ichiran.png in Resources */,
 				9CEC59EA1A16FF7D00516137 /* ship_icon_072.png in Resources */,
 				9CEC5A8A1A16FF7D00516137 /* ship_icon_232.png in Resources */,
 				9CEC5A4F1A16FF7D00516137 /* ship_icon_173.png in Resources */,
